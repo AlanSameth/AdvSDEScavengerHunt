@@ -5,3 +5,6 @@ from django.shortcuts import render
 
 def home_page(request):
     return HttpResponse("this is user home")
+
+def login(request):
+    return HttpResponse("login succeeded!")
