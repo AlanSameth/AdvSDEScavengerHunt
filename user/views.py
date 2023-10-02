@@ -11,3 +11,5 @@ def home_page(request):
 def logout_user(request):
     logout(request)
     return redirect('/')
+
+#learned how to use logout from this URL: https://www.youtube.com/watch?v=yO6PP0vEOMc

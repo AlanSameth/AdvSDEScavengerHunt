@@ -150,3 +150,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL='/'
+
+# learned a lot of set up from the allauth website url: https://django-allauth.readthedocs.io/en/latest/account/index.html
+# learned some set up from URL: https://www.section.io/engineering-education/django-google-oauth/
