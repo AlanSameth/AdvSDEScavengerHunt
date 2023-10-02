@@ -1,10 +1,13 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import logout
+
 
 # Create your views here.
 
 def home_page(request):
-    return HttpResponse("this is user home")
 
-def login(request):
-    return HttpResponse("login succeeded!")
+    return render(request,"home.html")
+
+def logout_user(request):
+    logout(request)
+    return redirect('/')

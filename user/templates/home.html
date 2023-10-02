@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://apis.google.com/js/platform.js" ></script>
+    <meta name="google-signin-client_id" content="943788471911-pt9a1gjjvgvfn3lg98kddq118medg0fd.apps.googleusercontent.com">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% load socialaccount %}
+
+
+    {% if user.is_authenticated %}
+      <p>Welcome to your home page, You are logged in as {{ user.username }}</p>
+        <a href="logout">Logout</a>
+    {% else %}
+         <script>
+            console.log('hello world')
+        </script>
+        <h1>scavenger hunt game login </h1>
+{#        <div class="g-signin2" data-onsuccess="onSignIn"></div>#}
+        <a href="{% provider_login_url 'google' %}?next=/">Login With Google</a><br>
+
+
+    {% endif %}
+
+</body>
+</html>
