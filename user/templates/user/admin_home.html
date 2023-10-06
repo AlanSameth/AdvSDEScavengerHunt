@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://apis.google.com/js/platform.js" ></script>
+    <meta name="google-signin-client_id" content="943788471911-pt9a1gjjvgvfn3lg98kddq118medg0fd.apps.googleusercontent.com">
+    <title>Title</title>
+</head>
+<body>
+    {% load socialaccount %}
+    <p>
+        this is admin home, you are logged in as {{admin.user_name }}<br>
+    </p>
+    <a href="logout">Logout</a>
+</body>
+</html>
