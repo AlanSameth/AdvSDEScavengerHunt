@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ztmy(t^t4l+d&vqnx*r=s85*4-tiwva$7tuk&$!fu=ai-ebi@1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['projectb-27-4101244887a2.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', 'projectb-27-4101244887a2.herokuapp.com']
 SITE_ID = 1
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
@@ -92,13 +92,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(),
-    'local': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+ON_HEROKU = os.environ.get('ON_HEROKU')
+
+if ON_HEROKU:
+    DATABASE_URL = 'postgres://qwzyynafeloxwb:3b136abfa2e3d9a5bb533046ebdec766b2f6a855ef1d864a73abd04bf2d116a4@ec2-54-208-11-146.compute-1.amazonaws.com:5432/d3158crfto023j'
+else:
+    DATABASE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+
+DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
