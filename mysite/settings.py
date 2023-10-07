@@ -100,6 +100,8 @@ else:
 
 DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 
+# Above database code adapted from https://stackoverflow.com/questions/26080303/improperlyconfigured-settings-databases-is-improperly-configured-please-supply
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
