@@ -8,9 +8,11 @@ from django.urls import reverse
 
 def home_page(request):
     if request.user.is_authenticated:
-        user_new=User.objects.filter(user_name=request.user.username).first()
+        user_new=User.objects.filter(user_email=request.user.email).first()
         if user_new is not None:
             if user_new.is_admin:
+                user_new.user_name=request.user.username
+                user_new.save()
                 return render(request,"user/admin_home.html",{"admin":user_new})
             else:
                 return render(request, "user/home.html")
@@ -22,7 +24,6 @@ def home_page(request):
 def logout_user(request):
     logout(request)
     return redirect('/')
-
 
 
 
