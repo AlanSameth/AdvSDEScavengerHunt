@@ -10,9 +10,9 @@ def home_page(request):
     if request.user.is_authenticated:
         user_new=User.objects.filter(user_email=request.user.email).first()
         if user_new is not None:
+            user_new.user_name = request.user.username
+            user_new.save()
             if user_new.is_admin:
-                user_new.user_name=request.user.username
-                user_new.save()
                 return render(request,"user/admin_home.html",{"admin":user_new})
             else:
                 return render(request, "user/home.html")
