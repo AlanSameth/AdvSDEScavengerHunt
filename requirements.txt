@@ -3,3 +3,4 @@ django-allauth
 gunicorn
 dj-config-url
 psycopg2-binary
+whitenoise

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ztmy(t^t4l+d&vqnx*r=s85*4-tiwva$7tuk&$!fu=ai-ebi@1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'projectb-27-4101244887a2.herokuapp.com']
-SITE_ID = 1
+SITE_ID = 2
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
 # Application definition
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
