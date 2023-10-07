@@ -9,11 +9,14 @@ from django.urls import reverse
 def home_page(request):
     if request.user.is_authenticated:
         user_new=User.objects.filter(user_name=request.user.username).first()
-        if user_new is not None and user_new.is_admin:
-            return render(request,"user/admin_home.html",{"admin":user_new})
-
-        user_tosave=User(user_name=request.user.username,user_email=request.user.email)
-        user_tosave.save()
+        if user_new is not None:
+            if user_new.is_admin:
+                return render(request,"user/admin_home.html",{"admin":user_new})
+            else:
+                return render(request, "user/home.html")
+        else:
+            user_tosave=User(user_name=request.user.username,user_email=request.user.email)
+            user_tosave.save()
     return render(request, "user/home.html")
 
 def logout_user(request):
