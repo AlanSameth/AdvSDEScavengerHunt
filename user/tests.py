@@ -7,6 +7,7 @@ from .models import User
 
 
 # Create your tests here.
+
 def create_User(name, email, is_admin):
     """
     Create a User with the given `name` and 'email' and admin status.
