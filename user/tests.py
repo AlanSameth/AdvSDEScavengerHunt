@@ -34,17 +34,17 @@ class UserModelTests(TestCase):
         User1 = create_User(name, email, True)
         self.assertTrue(User1.is_admin)
 
-    # class HomePageTests(TestCase):
-    # def test_home_page_exists(self):
-    #     """
-    #     Test that user homepage is reachable.
-    #     """
-    #     name = "dummy"
-    #     email = "User@virginia.edu"
-    #     User1 = create_User(name, email, False)
-    #     response = self.client.get("")
-    #     self.assertContains(response, "home page")
-    #
+class HomePageTests(TestCase):
+    def test_home_page_exists(self):
+        """
+        Test that user homepage is reachable.
+        """
+        name = "dummy"
+        email = "User@virginia.edu"
+        User1 = create_User(name, email, False)
+        response = self.client.get("")
+        self.assertContains(response, "home page")
+
     # def test_admin_page_exists(self):
     #     """
     #     Test that admin homepage is reachable.
