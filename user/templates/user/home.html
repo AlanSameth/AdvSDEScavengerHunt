@@ -4,9 +4,50 @@
     <script src="https://apis.google.com/js/platform.js" ></script>
     <meta name="google-signin-client_id" content="943788471911-pt9a1gjjvgvfn3lg98kddq118medg0fd.apps.googleusercontent.com">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="HTML, CSS" />
+    <title>{% block title %}{% endblock %}</title>
+    {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
 </head>
 <body>
+    <nav
+      class="navbar navbar-expand-lg bg-body-tertiary"
+      style="background-color: #e3f2fd"
+    >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Home</a>
+      </div>
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Dropdown
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Home Page</li>
+          <li>
+            <a class="dropdown-item" href="#"
+              >Another Page</a
+            >
+          </li>
+        </ul>
+      </li>
+    </nav>
     {% load socialaccount %}
 
 
