@@ -27,4 +27,8 @@ def logout_user(request):
 
 
 
+def Map(request):
+    return render(request, "user/map.html")
+
+
 #learned how to use logout from this URL: https://www.youtube.com/watch?v=yO6PP0vEOMc
