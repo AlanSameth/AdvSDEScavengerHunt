@@ -8,14 +8,13 @@
 </head>
 <body>
 
-<a href="{% url 'Map' %}">google map</a><br>
     {% load socialaccount %}
-
 
     {% if user.is_authenticated %}
       <p>Welcome to user home page, You are logged in as {{ user.username }}</p><br>
         <p> Email: {{ user.email }}</p>
-        <a href="logout">Logout</a>
+        <a href="logout">Logout</a><br>
+        <a href="{% url 'Map' %}">google map</a><br>
 
 
     {% else %}
