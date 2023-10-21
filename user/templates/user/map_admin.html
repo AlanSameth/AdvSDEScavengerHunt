@@ -11,7 +11,8 @@
     function success(position){
 
         var myLat=position.coords.latitude;
-        var myLong=position.coords.longitude
+        var myLong=position.coords.longitude;
+        var infoWindow = [];
 
         var coords=new google.maps.LatLng(myLat,myLong);
         var mapOptions={
@@ -27,10 +28,23 @@
                 map: map,
                 title: data.name
             });
+
+            var infowindow = new google.maps.InfoWindow({
+                content: data.name,
+            });
+
+            infoWindow.push(infowindow)
+            marker.addListener('click', function(){
+                infoWindow.forEach(function(iw){
+                    iw.close();
+                });
+
+                infowindow.open(map, marker)
+                });
         });
 
 
-        var marker_curent= new google.maps.Marker({
+        var marker_current= new google.maps.Marker({
             map:map,
             position:coords,
             icon: {

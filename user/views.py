@@ -17,6 +17,8 @@ class location_form(forms.Form):
     address = forms.CharField(max_length=400, label="address",required=True)
 
 def input_location(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("Home"))
     if request.method == "POST":
         form = location_form(request.POST)
         if form.is_valid():
@@ -88,7 +90,7 @@ def Map(request):
         else:
             return render(request, "user/map.html")
     else:
-        return HttpResponseRedirect(reverse("user:home_page"))
+        return HttpResponseRedirect(reverse("Home"))
 
 
 
