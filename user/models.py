@@ -9,3 +9,13 @@ class User(models.Model):
     is_admin=models.BooleanField(default=False)
 
 
+class location(models.Model):
+    """ this is the database for Hidden location information """
+    zipcode = models.CharField(max_length=400)
+    city = models.CharField(max_length=400)
+    country = models.CharField(max_length=400)
+    address = models.CharField(max_length=400,blank=True,null=True)
+    last_edited_time = models.DateTimeField(auto_now=True,null=True)
+    latitude = models.CharField(max_length=400,blank=True,null=True)
+    longitude = models.CharField(max_length=400,blank=True,null=True)
+    place_id = models.CharField(max_length=400,blank=True,null=True)

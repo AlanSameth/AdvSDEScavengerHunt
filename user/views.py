@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate
-from user.models import User
+from user.models import User, location
 from django.urls import reverse
+from django.views.generic import ListView
 
 # Create your views here.
 
@@ -29,6 +30,15 @@ def logout_user(request):
 
 def Map(request):
     return render(request, "user/map.html")
+
+def map_admin(request):
+    hidden_location_list = location.objects.all()
+    return render(request,"user/map_admin.html",{"mydata":hidden_location_list})
+
+
+
+
+
 
 
 #learned how to use logout from this URL: https://www.youtube.com/watch?v=yO6PP0vEOMc

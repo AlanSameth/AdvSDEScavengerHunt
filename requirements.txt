@@ -4,3 +4,4 @@ gunicorn
 dj-config-url
 psycopg2-binary
 whitenoise
+googlemaps
