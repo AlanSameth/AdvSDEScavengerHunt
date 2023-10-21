@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap"></script>
+    <script>
+    x=navigator.geolocation;
+    x.getCurrentPosition(success,failure);
+    function success(position){
+
+        var myLat=position.coords.latitude;
+        var myLong=position.coords.longitude
+
+        var coords=new google.maps.LatLng(myLat,myLong);
+        var mapOptions={
+            zoom: 16,
+            center: coords,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map=new google.maps.Map(document.getElementById("map"),mapOptions);
+        var locations = {{ locations|safe}};
+        locations.forEach(function (data){
+            var marker = new google.maps.Marker({
+                position: {lat: data.lat, lng: data.lng},
+                map: map,
+                title: data.name
+            });
+        });
+
+
+        var marker_curent= new google.maps.Marker({
+            map:map,
+            position:coords,
+            icon: {
+      url: "http://maps.google.com/mapfiles/arrow.png"
+    }
+        });
+
+    }
+
+    function failure(){}
+</script>
+    <style type="text/css">
+        #map{
+            width:80%;
+            height:60vh;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Map</h1>
+<div id="map"></div>
+
+<a href="{% url 'Home' %}">back to homepage</a><br>
+<a href="{% url 'input_location' %}">add a new hidden location</a><br>
+
+
+<style>
+.myTable{
+    font-size: 12px;
+    min-width: 400px;
+    overflow: hidden;
+    border-radius: 7px 7px 0 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .15);
+    border:1px solid black;
+}
+
+.myTable td, .myTable th {
+   border:1px solid black;
+  }
+
+
+</style>
+<div class="linkholder">
+        {% if mydata.count == 0 %}
+            <div> No data available </div>
+        {% else %}
+            <table id="ourtable3" class="myTable m-3">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Address</th>
+                        <th>Zipcode</th>
+                        <th>City</th>
+                        <th>Country</th>
+                        <th>longitude</th>
+                        <th>latitude</th>
+                        <th>place_id</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for a in mydata %}
+                    <tr>
+                        <td> {{a.id}} </td>
+                        <td> {{a.address}} </td>
+                        <td> {{a.zipcode}} </td>
+                        <td> {{a.city}} </td>
+                        <td> {{a.country}} </td>
+                        <td> {{a.longitude}} </td>
+                        <td> {{a.latitude}} </td>
+                        <td> {{a.place_id}} </td>
+                    </tr>
+
+                    {% endfor%}
+                </tbody>
+
+
+            </table>
+        {% endif %}
+     </div>
+
+</body>
+</html>
+
+{#learned how to use html table from this URl: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_table6#}
+{#leared how to change icons from this URL:https://sites.google.com/site/gmapsdevelopment/#}

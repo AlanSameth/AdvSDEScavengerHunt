@@ -73,12 +73,26 @@ def Map(request):
     if request.user.is_authenticated:
         user_new = User.objects.filter(user_email=request.user.email).first()
         if user_new.is_admin:
-            hidden_location_list = location.objects.all()
-            return render(request, "user/map_admin.html", {"mydata": hidden_location_list})
+            hidden_location_list = location.objects.filter(place_id__isnull=False)
+            locations = []
+
+            for a in hidden_location_list:
+                data = {
+                    'lat': float(a.latitude),
+                    'lng': float(a.longitude),
+                    'name': a.address
+                }
+                locations.append(data)
+            print(locations)
+            return render(request, "user/map_admin.html", {"mydata": hidden_location_list,"locations":locations})
         else:
             return render(request, "user/map.html")
     else:
         return HttpResponseRedirect(reverse("user:home_page"))
+
+
+
+
 
 
 

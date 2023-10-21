@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="{% url 'input_location' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit"><br>
+    <a href="{% url 'Home' %}">back to homepage</a><br>
+    <a href="{% url 'Map' %}">back to map page</a><br>
+
+</form>
+</body>
+</html>
