@@ -3,9 +3,50 @@ from django.contrib.auth import logout
 from django.contrib.auth import authenticate
 from user.models import User, location
 from django.urls import reverse
-from django.views.generic import ListView
+from django import forms
+from django.http import HttpResponseRedirect
+import googlemaps
 
 # Create your views here.
+
+
+class location_form(forms.Form):
+    zipcode = forms.CharField(max_length=400,label="zipcode",required=True)
+    city = forms.CharField(max_length=400,label="city",required=True)
+    country = forms.CharField(max_length=400,label="country",required=True)
+    address = forms.CharField(max_length=400, label="address",required=True)
+
+def input_location(request):
+    if request.method == "POST":
+        form = location_form(request.POST)
+        if form.is_valid():
+            loca = location()
+            loca.zipcode = form.cleaned_data["zipcode"]
+            loca.city = form.cleaned_data["city"]
+            loca.country = form.cleaned_data["country"]
+            loca.address = form.cleaned_data["address"]
+
+            if location.objects.filter(zipcode=loca.zipcode,city=loca.city,country=loca.country,address=loca.address).first() is not None:
+                # if we can show a message here? like the location is already marked
+                return HttpResponseRedirect(reverse("Map"))
+            adress_string = str(loca.address) + ", " + str(loca.zipcode) + ", " + str(
+                loca.city) + ", " + str(loca.country)
+            gmaps = googlemaps.Client(key='AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc')
+            result = gmaps.geocode(adress_string)[0]
+            lat = result.get('geometry', {}).get('location', {}).get('lat', None)
+            lng = result.get('geometry', {}).get('location', {}).get('lng', None)
+            place_id = result.get('place_id', {})
+
+            loca.latitude = lat
+            loca.longitude = lng
+            loca.place_id = place_id
+            loca.save()
+
+            return HttpResponseRedirect(reverse("Map"))
+
+    else:
+        form = location_form()
+    return render(request, "user/new_location.html", {"form": form})
 
 def home_page(request):
     if request.user.is_authenticated:
@@ -29,11 +70,17 @@ def logout_user(request):
 
 
 def Map(request):
-    return render(request, "user/map.html")
+    if request.user.is_authenticated:
+        user_new = User.objects.filter(user_email=request.user.email).first()
+        if user_new.is_admin:
+            hidden_location_list = location.objects.all()
+            return render(request, "user/map_admin.html", {"mydata": hidden_location_list})
+        else:
+            return render(request, "user/map.html")
+    else:
+        return HttpResponseRedirect(reverse("user:home_page"))
 
-def map_admin(request):
-    hidden_location_list = location.objects.all()
-    return render(request,"user/map_admin.html",{"mydata":hidden_location_list})
+
 
 
 
