@@ -3,29 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap"></script>
+    <script>
+    x=navigator.geolocation;
+    x.getCurrentPosition(success,failure);
+    function success(position){
+        var myLat=position.coords.latitude;
+        var myLong=position.coords.longitude
+
+        var coords=new google.maps.LatLng(myLat,myLong);
+        var mapOptions={
+            zoom: 16,
+            center: coords,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map=new google.maps.Map(document.getElementById("map"),mapOptions);
+        var marker= new google.maps.Marker({
+            map:map,
+            position:coords
+        });
+
+    }
+
+    function failure(){}
+</script>
+    <style type="text/css">
+        #map{
+            width:100%;
+            height:80vh;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
 
 <h1>Google Map of UVA</h1>
 
-<div id="googleMap" style="width:100%;height:400px;"></div>
 
-<script>
-function myMap() {
+<div id="map"></div>
 
-var mapProp = {
-  center: new google.maps.LatLng(38.0336, -78.5080), // Replace with your coordinates
-  zoom: 16, // You can adjust the zoom level as needed
-  mapTypeId: google.maps.MapTypeId.ROADMAP
-};
-var map = new google.maps.Map(document.getElementById("googleMap"),mapProp,);
-}
-</script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=myMap"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap&libraries=&v=weekly"
+        async
+></script>
+
 
 </body>
 </html>
 
 
 {#learned how to show google map API in html from this URL:https://www.w3schools.com/graphics/google_maps_intro.asp#}
+{#learned how to get current user location on the map from this URL: https://www.youtube.com/watch?v=xJubVipcHrM#}
