@@ -1,9 +1,11 @@
+import datetime
 from unittest import mock
 
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import User
+from .models import User, location
+from .views import home_page
 
 
 # Create your tests here.
@@ -34,8 +36,7 @@ class UserModelTests(TestCase):
         User1 = create_User(name, email, True)
         self.assertTrue(User1.is_admin)
 
-class HomePageTests(TestCase):
-    def test_home_page_exists(self):
+    def test_user_exists(self):
         """
         Test that created User will be treated as a User.
         """
@@ -45,7 +46,7 @@ class HomePageTests(TestCase):
         User1.save()
         self.assertIn(User1, User.objects.all())
 
-    def test_admin_page_exists(self):
+    def test_admin_exists(self):
         """
         Test that created Admin will be treated as an Admin.
         """
@@ -53,4 +54,15 @@ class HomePageTests(TestCase):
         email = "User@virginia.edu"
         Admin1 = create_User(name, email, True)
         Admin1.save()
-        self.assertIn(Admin1, User.objects.all().filter(is_admin = True))
+        self.assertIn(Admin1, User.objects.all().filter(is_admin=True))
+
+
+class MapTests(TestCase):
+    def test_location_creation(self):
+        q = location.objects.create(zipcode=12345, city='town', country='America', address= '180 road street', last_edited_time= datetime.time, latitude=0, longitude=0, place_id=1)
+        self.assertIsInstance(q, location)
+
+    def test_location_exists(self):
+        q = location.objects.create(zipcode=12345, city='town', country='America', address= '180 road street', last_edited_time= datetime.time, latitude=0, longitude=0, place_id=1)
+        q.save()
+        self.assertIn(q, location.objects.all())
