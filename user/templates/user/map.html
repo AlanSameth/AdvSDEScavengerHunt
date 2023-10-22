@@ -11,6 +11,13 @@
         var myLat=position.coords.latitude;
         var myLong=position.coords.longitude
 
+        var user_location = document.getElementById("user_location");
+        var textNode1 = document.createTextNode("current location longitude：" + myLong);
+        var textNode2 = document.createTextNode("current location latitude：" + myLat);
+        user_location.appendChild(textNode1);
+        user_location.appendChild(document.createElement("br"));
+        user_location.appendChild(textNode2);
+
         var coords=new google.maps.LatLng(myLat,myLong);
         var mapOptions={
             zoom: 16,
@@ -20,7 +27,10 @@
         var map=new google.maps.Map(document.getElementById("map"),mapOptions);
         var marker= new google.maps.Marker({
             map:map,
-            position:coords
+            position:coords,
+            icon: {
+      url: "http://maps.google.com/mapfiles/arrow.png"
+    }
         });
 
     }
@@ -30,7 +40,7 @@
     <style type="text/css">
         #map{
             width:100%;
-            height:80vh;
+            height:70vh;
             padding: 10px;
         }
     </style>
@@ -41,7 +51,7 @@
 
 
 <div id="map"></div>
-
+<div id="user_location" style="background-color:tomato;"></div>
 <a href="{% url 'Home' %}">back to homepage</a><br>
 
 

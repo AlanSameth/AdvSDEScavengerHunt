@@ -12,6 +12,14 @@
 
         var myLat=position.coords.latitude;
         var myLong=position.coords.longitude;
+        var user_location = document.getElementById("user_location");
+        var textNode1 = document.createTextNode("current location longitude：" + myLong);
+        var textNode2 = document.createTextNode("current location latitude：" + myLat);
+        user_location.appendChild(textNode1);
+        user_location.appendChild(document.createElement("br"));
+        user_location.appendChild(textNode2);
+        {#consulted chatGPT for using document in js to show information on page#}
+
         var infoWindow = [];
 
         var coords=new google.maps.LatLng(myLat,myLong);
@@ -66,10 +74,13 @@
 </head>
 <body>
 
-<h1>Map</h1>
-<div id="map"></div>
 
-<a href="{% url 'Home' %}">back to homepage</a><br>
+
+<h1>Map</h1>
+<div id="map" ></div>
+<div id="user_location" style="background-color:tomato;"></div>
+
+<a href="{% url 'Home' %}" >back to homepage</a><br>
 <a href="{% url 'input_location' %}">add a new hidden location</a><br>
 
 
@@ -86,6 +97,9 @@
 .myTable td, .myTable th {
    border:1px solid black;
   }
+
+
+
 
 
 </style>
@@ -134,3 +148,4 @@
 
 {#learned how to use html table from this URl: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_table6#}
 {#leared how to change icons from this URL:https://sites.google.com/site/gmapsdevelopment/#}
+{#learned how to do geo coding from this series of videos: https://www.youtube.com/watch?v=sasx2ppol5c&list=PLmEKHA8iFrmD6YEiuROna3JmNC7fjq6go&index=5#}
