@@ -1,0 +1,16 @@
+body{
+    font-family: Ubuntu;
+}
+.col-4{
+    border-radius: 2px;
+    border-color: gray;
+}
+.card{
+    border-radius: 2px;
+    border-color: gray;
+    background-color: aqua;
+}
+.placeholder{
+    width: fit-content;
+    height: 500px;
+}
