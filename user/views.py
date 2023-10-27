@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate
-from user.models import User, location
+from user.models import User, location, Game
 from django.urls import reverse
 from django import forms
 from django.http import HttpResponseRedirect
@@ -69,7 +69,10 @@ def logout_user(request):
     logout(request)
     return redirect('/')
 
-
+def create_game(request):
+    #figure out template later
+    user = request.user
+    game = Game(user)
 
 def Map(request):
     if request.user.is_authenticated:
