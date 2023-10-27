@@ -2,6 +2,7 @@ from django.db import transaction
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate
+from django.views.generic import CreateView
 
 from user.forms import LocationFormSet
 from user.models import User, location, Game
@@ -78,13 +79,13 @@ def logout_user(request):
     return redirect('/')
 
 
-def create_game(request):
-    # figure out template later
-    user = request.user
-    game = Game(user)
-
+class SubmissionView(CreateView):
+    model = Game
+    fields = ['game_name']
+    #figure out template
+    #figure out success url
     def get_context_data(self, **kwargs):
-        data = super(create_game, self).get_context_data(**kwargs)
+        data = super(SubmissionView, self).get_context_data(**kwargs)
         if self.request.POST:
             data['game'] = LocationFormSet(self.request.POST)
         else:
@@ -100,7 +101,7 @@ def create_game(request):
             if game.is_valid():
                 game.instance = self.object
                 game.save()
-        return super(create_game, self).form_valid(form)
+        return super(SubmissionView, self).form_valid(form)
 
 
 def Map(request):
