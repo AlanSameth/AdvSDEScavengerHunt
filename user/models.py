@@ -11,6 +11,7 @@ class User(models.Model):
 class Game(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     game_name = models.CharField(max_length=400)
+    is_approved = models.BooleanField(default=False)
 
 class location(models.Model):
     """ this is the database for Hidden location information """
