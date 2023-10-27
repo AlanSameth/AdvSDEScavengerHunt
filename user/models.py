@@ -22,6 +22,6 @@ class location(models.Model):
     latitude = models.CharField(max_length=400,blank=True,null=True)
     longitude = models.CharField(max_length=400,blank=True,null=True)
     place_id = models.CharField(max_length=400,blank=True,null=True)
-    hint = models.CharField(max_length=400)
-    game_id = models.ForeignKey(Game, on_delete=models.CASCADE)
+    hint = models.CharField(max_length=400, null=True)
+    game_id = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
 
