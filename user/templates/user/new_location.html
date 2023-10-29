@@ -5,13 +5,51 @@
     <title>Title</title>
 </head>
 <body>
-<form action="{% url 'input_location' %}" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit"><br>
-    <a href="{% url 'Home' %}">back to homepage</a><br>
-    <a href="{% url 'Map' %}">back to map page</a><br>
-
-</form>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <div class="container mt-4">
+        <h2 class="mb-4 display-4">Submit New Location</h2>
+        <form action="{% url 'input_location' %}" method="post">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <div class="col-md-1">
+                    <label for="zipcode" class="form-label">Zip Code</label>
+                </div>
+                <div class="col-md-10">
+                    {{ form.zipcode }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-1">
+                    <label for="city" class="form-label">City</label>
+                </div>
+                <div class="col-md-10">
+                    {{ form.city }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-1">
+                    <label for="country" class="form-label">Country</label>
+                </div>
+                <div class="col-md-10">
+                    {{ form.country }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-1">
+                    <label for="address" class="form-label">Address</label>
+                </div>
+                <div class="col-md-10">
+                    {{ form.address }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+        <div class="mt-4">
+            <a class="btn btn-primary" href="{% url 'Home' %}">Back to Homepage</a>
+            <a class="btn btn-secondary ms-2" href="{% url 'Map' %}">Back to Map Page</a>
+        </div>
+    </div>
 </body>
 </html>
