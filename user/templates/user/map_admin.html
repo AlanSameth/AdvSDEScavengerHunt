@@ -7,28 +7,28 @@
      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap"></script>
     <script>
     x=navigator.geolocation;
-    x.getCurrentPosition(success,failure);
-    function success(position){
+    {#x.getCurrentPosition(success,failure);#}
+    x.watchPosition(success,failure,{enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 1});
+    var count=0;
+    var map;
+    var marker_current
+    function haversine_distance(long1, lat1,long2,lat2) {
+      var R = 3958.8;
+      var rlat1 = lat1 * (Math.PI/180);
+      var rlat2 = lat2 * (Math.PI/180);
+      var difflat = rlat2-rlat1;
+      var difflon = (long2-long1) * (Math.PI/180);
 
-        var myLat=position.coords.latitude;
-        var myLong=position.coords.longitude;
-        var user_location = document.getElementById("user_location");
-        var textNode1 = document.createTextNode("current location longitude：" + myLong);
-        var textNode2 = document.createTextNode("current location latitude：" + myLat);
-        user_location.appendChild(textNode1);
-        user_location.appendChild(document.createElement("br"));
-        user_location.appendChild(textNode2);
-        {#consulted chatGPT for using document in js to show information on page#}
-
-        var infoWindow = [];
-
-        var coords=new google.maps.LatLng(myLat,myLong);
+      var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
+      return d*1609.34;
+    }
+    function initmap(coords,infoWindow){
         var mapOptions={
             zoom: 16,
             center: coords,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
-        var map=new google.maps.Map(document.getElementById("map"),mapOptions);
+        map=new google.maps.Map(document.getElementById("map"),mapOptions);
         var locations = {{ locations|safe}};
         locations.forEach(function (data){
             var marker = new google.maps.Marker({
@@ -51,14 +51,75 @@
                 });
         });
 
-
-        var marker_current= new google.maps.Marker({
+        marker_current= new google.maps.Marker({
             map:map,
             position:coords,
             icon: {
       url: "http://maps.google.com/mapfiles/arrow.png"
     }
         });
+    }
+    function success(position){
+        count++;
+
+        var myLat=position.coords.latitude;
+        var myLong=position.coords.longitude;
+        var user_location = document.getElementById("user_location");
+
+        user_location.innerHTML="current location longitude：" + myLong+"<br>";
+        user_location.innerHTML+="current location latitude：" + myLat+"<br>";
+        user_location.innerHTML+="count：" + count;
+        {#consulted chatGPT for using document in js to show information on page#}
+
+        var infoWindow = [];
+
+        var coords=new google.maps.LatLng(myLat,myLong);
+        if(count==1){
+            initmap(coords,infoWindow)
+        }
+        marker_current.setPosition(coords)
+
+        var locations = {{ locations|safe}};
+        locations.forEach(function (data){
+            console.log(haversine_distance(data.lng, data.lat,myLong,myLat))
+            if(haversine_distance(data.lng, data.lat,myLong,myLat)<=100){
+                window.alert("You are very close to the hidden place!");
+                console.log("11111")
+            }
+        });
+        {#var mapOptions={#}
+        {#    zoom: 16,#}
+        {#    center: coords,#}
+        {#    mapTypeId: google.maps.MapTypeId.ROADMAP}#}
+        {#var map=new google.maps.Map(document.getElementById("map"),mapOptions);#}
+        {#var locations = {{ locations|safe}};#}
+        {#locations.forEach(function (data){#}
+        {#    var marker = new google.maps.Marker({#}
+        {#        position: {lat: data.lat, lng: data.lng},#}
+        {#        map: map,#}
+        {#        title: data.name#}
+        {#    });#}
+        {##}
+        {#    var infowindow = new google.maps.InfoWindow({#}
+        {#        content: data.name,#}
+        {#    });#}
+        {##}
+        {#    infoWindow.push(infowindow)#}
+        {#    marker.addListener('click', function(){#}
+        {#        infoWindow.forEach(function(iw){#}
+        {#            iw.close();#}
+        {#        });#}
+        {##}
+        {#        infowindow.open(map, marker)#}
+        {#        }); });#}
+
+
+      {#  var marker_current= new google.maps.Marker({#}
+      {#      map:map,#}
+      {#      position:coords,#}
+      {#      icon: {#}
+      {#url: "http://maps.google.com/mapfiles/arrow.png"}#}
+      {#  });#}
 
     }
 
@@ -149,3 +210,4 @@
 {#learned how to use html table from this URl: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_table6#}
 {#leared how to change icons from this URL:https://sites.google.com/site/gmapsdevelopment/#}
 {#learned how to do geo coding from this series of videos: https://www.youtube.com/watch?v=sasx2ppol5c&list=PLmEKHA8iFrmD6YEiuROna3JmNC7fjq6go&index=5#}
+{#learned how to calculate distance with longitude and latitude from this URl: https://cloud.google.com/blog/products/maps-platform/how-calculate-distances-map-maps-javascript-api#}
