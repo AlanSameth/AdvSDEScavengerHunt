@@ -1,95 +1,81 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <script src="https://apis.google.com/js/platform.js"></script>
+    <meta name="google-signin-client_id"
+        content="943788471911-pt9a1gjjvgvfn3lg98kddq118medg0fd.apps.googleusercontent.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="HTML, CSS" />
+    <title>{% block title %}{% endblock %}</title>
+    {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Ubuntu:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'user/home.css' %} " />
 </head>
+
 <body style="background-color: #e3f2fd">
-    {% load bootstrap5 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <nav
-      class="navbar navbar-expand-lg navbar-dark bg-dark"
-      style="background-color: #e3f2fd"
-    >
-      <div class="container-fluid">
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNavDropdown"
-        aria-controls="navbarNavDropdown"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Home</a>
-      </div>
-      <li class="nav-item dropdown">
-        <a
-          class="nav-link dropdown-toggle"
-          href="#"
-          role="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          Dropdown
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Home Page</li>
-          <li>
-            <a class="dropdown-item" href="#"
-              >Another Page</a
-            >
-          </li>
-        </ul>
-      </li>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'Home' %}">UVA Scavenger Hunt</a>
+            </div>
+            <div class="btn-group">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'Home' %}">Home</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'input_location' %}">Create Point</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'Map' %}">Map</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="logout">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+        </div>
     </nav>
     <div class="container mt-4">
-        <h2 class="mb-4 display-4">Submit New Location</h2>
-        <form action="{% url 'input_location' %}" method="post">
-            {% csrf_token %}
-            <div class="row mb-3">
-                <div class="col-md-1">
-                    <label for="zipcode" class="form-label">Zip Code</label>
-                </div>
-                <div class="col-md-10">
-                    {{ form.zipcode }}
-                </div>
+        <div class="row">
+            <div class="col-8">
+                <form action="{% url 'input_location' %}" method="post">
+                    {% csrf_token %}
+                    <div class="card" style="width: 40rem; background-color: white;">
+                        <div class="card-header">
+                            <h4>Create New Location</h4>
+                        </div>
+                        <div class="card-body">
+                            {{ form.non_form_errors }} {{ form.as_p }}
+                        </div>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+                
             </div>
-            <div class="row mb-3">
-                <div class="col-md-1">
-                    <label for="city" class="form-label">City</label>
-                </div>
-                <div class="col-md-10">
-                    {{ form.city }}
-                </div>
+            <div class="col-4">
+                Submission History
             </div>
-            <div class="row mb-3">
-                <div class="col-md-1">
-                    <label for="country" class="form-label">Country</label>
-                </div>
-                <div class="col-md-10">
-                    {{ form.country }}
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-1">
-                    <label for="address" class="form-label">Address</label>
-                </div>
-                <div class="col-md-10">
-                    {{ form.address }}
-                </div>
-            </div>
-            <button type="submit" class="btn btn-success">Submit</button>
-        </form>
-        <div class="mt-4">
-            <a class="btn btn-primary" href="{% url 'Home' %}">Back to Homepage</a>
-            <a class="btn btn-secondary ms-2" href="{% url 'Map' %}">Back to Map Page</a>
         </div>
     </div>
 </body>
+
 </html>

@@ -16,10 +16,10 @@ import googlemaps
 
 
 class location_form(forms.Form):
-    zipcode = forms.CharField(max_length=400, label="zipcode", required=True)
+    address = forms.CharField(max_length=400, label="address", required=True)
     city = forms.CharField(max_length=400, label="city", required=True)
     country = forms.CharField(max_length=400, label="country", required=True)
-    address = forms.CharField(max_length=400, label="address", required=True)
+    zipcode = forms.CharField(max_length=400, label="zipcode", required=True)
 
 
 def input_location(request):

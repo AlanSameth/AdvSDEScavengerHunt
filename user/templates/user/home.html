@@ -1,9 +1,11 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script src="https://apis.google.com/js/platform.js" ></script>
-  <meta name="google-signin-client_id" content="943788471911-pt9a1gjjvgvfn3lg98kddq118medg0fd.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js"></script>
+  <meta name="google-signin-client_id"
+    content="943788471911-pt9a1gjjvgvfn3lg98kddq118medg0fd.apps.googleusercontent.com">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="keywords" content="HTML, CSS" />
@@ -11,121 +13,124 @@
   {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'user/home.css' %} "/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Ubuntu:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'user/home.css' %} " />
 </head>
+
 <body>
-    <nav
-      class="navbar navbar-expand-lg navbar-dark bg-dark"
-      style="background-color: #e3f2fd"
-    >
+  {% load socialaccount %}
+  {% if user.is_authenticated %}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
       <div class="container-fluid">
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNavDropdown"
-        aria-controls="navbarNavDropdown"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+        <a class="navbar-brand" href="{% url 'Home' %}">UVA Scavenger Hunt</a>
+      </div>
+      <div class="btn-group">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="{% url 'Home' %}">Home</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'input_location' %}">Create Point</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'Map' %}">Map
+            </li>
+            <li>
+              <a class="dropdown-item" href="logout">Logout</a>
+            </li>
+          </ul>
+        </li>
+      </div>
+    </div>
+  </nav>
+  {% else %}
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Home</a>
       </div>
-      <li class="nav-item dropdown">
-        <a
-          class="nav-link dropdown-toggle"
-          href="#"
-          role="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          Dropdown
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Home Page</li>
-          <li>
-            <a class="dropdown-item" href="#"
-              >Another Page</a
-            >
-          </li>
-        </ul>
-      </li>
+      <a href="{% provider_login_url 'google' %}?next=/"><button type="button" class="btn btn-outline-primary">Login
+          With
+          Google</button></a><br>
     </div>
-    </nav>
-    <div class="container text-center">
-      <div class="row">
-        <div class="col-8">
-          <div class="row">
-            <img class="placeholder" src="{% static 'user/images/map_uva_central_grounds.jpg' %}" alt="Placeholder image of Map">
-          </div>
-          <div class="row">
-            {% load socialaccount %}
-
-    {% load socialaccount %}
-            {% if user.is_authenticated %}
-            <a href="logout">Logout</a>
-  
-  
-            {% else %}
-            <h1>scavenger hunt game login </h1>
-              {# <div class="g-signin2" data-onsuccess="onSignIn"></div>#}
-            <a href="{% provider_login_url 'google' %}?next=/"><button type="button" class="btn btn-outline-primary">Login With Google</button></a><br>
-            {% endif %}
-          </div>
+  </nav>
+  {# <div class="g-signin2" data-onsuccess="onSignIn"></div>#}
+  {% endif %}
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-8">
+        <div class="row">
+          <h1>scavenger hunt game login </h1>
         </div>
-        <div class="col-4">
-          <span class="border">
-              <h1 style="font-family: Ubuntu;">Leaderboard</h1>
-              <table class="table ">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                  </tr>
-                </tbody>
-              </table>
-          </span>
+        <div class="row">
         </div>
+      </div>
+      <div class="col-4">
+        <span class="border">
+          <h1 style="font-family: Ubuntu;">Leaderboard</h1>
+          <table class="table ">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td colspan="2">Larry the Bird</td>
+                <td>@twitter</td>
+              </tr>
+            </tbody>
+          </table>
+        </span>
       </div>
     </div>
   </div>
-    <footer class="bg-dark bg-info text-center text-lg-start fixed-bottom">
-      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-        <a class="navbar-brand" href="https://github.com/orgs/uva-cs3240-f23/teams/b-27" style="font-family: Ubuntu;">
-          &copy;github Repo
-        </a>
-      </div>
-    </footer>
+  </div>
+  <footer class="bg-dark bg-info text-center text-lg-start fixed-bottom">
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+      <a class="navbar-brand" href="https://github.com/orgs/uva-cs3240-f23/teams/b-27" style="font-family: Ubuntu;">
+        &copy;github Repo
+      </a>
+    </div>
+  </footer>
 
 </body>
+
 </html>
 
 
 {#learned how to use allauth and some of the html from those URLs: https://www.youtube.com/watch?v=Gk9tsLHMMsM#}
 {#https://www.youtube.com/watch?v=yO6PP0vEOMc#}
 {#https://www.youtube.com/watch?v=GQySb3W2feo#}
-{#Also looked at the google API documentation URL: https://developers.google.com/identity/gsi/web/guides/display-button#html#}
+{#Also looked at the google API documentation URL: https://developers.google.com/identity/gsi/web/guides/display-buttonhtml#}
