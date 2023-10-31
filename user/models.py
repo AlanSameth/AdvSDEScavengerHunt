@@ -26,4 +26,3 @@ class location(models.Model):
     clue = models.CharField(max_length=400, null=True)
     game_id = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
     is_approved = models.BooleanField(default=False)
-
