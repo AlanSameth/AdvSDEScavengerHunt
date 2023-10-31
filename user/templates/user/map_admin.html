@@ -1,38 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap"></script>
     <script>
-    x=navigator.geolocation;
-    x.getCurrentPosition(success,failure);
-    function success(position){
+        x = navigator.geolocation;
+        x.getCurrentPosition(success, failure);
+        function success(position) {
 
-        var myLat=position.coords.latitude;
-        var myLong=position.coords.longitude;
-        var user_location = document.getElementById("user_location");
-        var textNode1 = document.createTextNode("current location longitude：" + myLong);
-        var textNode2 = document.createTextNode("current location latitude：" + myLat);
-        user_location.appendChild(textNode1);
-        user_location.appendChild(document.createElement("br"));
-        user_location.appendChild(textNode2);
-        {#consulted chatGPT for using document in js to show information on page#}
+            var myLat = position.coords.latitude;
+            var myLong = position.coords.longitude;
+            var user_location = document.getElementById("user_location");
+            var textNode1 = document.createTextNode("current location longitude：" + myLong);
+            var textNode2 = document.createTextNode("current location latitude：" + myLat);
+            user_location.appendChild(textNode1);
+            user_location.appendChild(document.createElement("br"));
+            user_location.appendChild(textNode2);
 
-        var infoWindow = [];
+            var infoWindow = [];
 
-        var coords=new google.maps.LatLng(myLat,myLong);
-        var mapOptions={
-            zoom: 16,
-            center: coords,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        var map=new google.maps.Map(document.getElementById("map"),mapOptions);
-        var locations = {{ locations|safe}};
-        locations.forEach(function (data){
+            var coords = new google.maps.LatLng(myLat, myLong);
+            var mapOptions = {
+                zoom: 16,
+                center: coords,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            var locations = {{ locations | safe}};
+        locations.forEach(function (data) {
             var marker = new google.maps.Marker({
-                position: {lat: data.lat, lng: data.lng},
+                position: { lat: data.lat, lng: data.lng },
                 map: map,
                 title: data.name
             });
@@ -42,110 +43,109 @@
             });
 
             infoWindow.push(infowindow)
-            marker.addListener('click', function(){
-                infoWindow.forEach(function(iw){
+            marker.addListener('click', function () {
+                infoWindow.forEach(function (iw) {
                     iw.close();
                 });
 
                 infowindow.open(map, marker)
-                });
+            });
         });
 
 
-        var marker_current= new google.maps.Marker({
-            map:map,
-            position:coords,
+        var marker_current = new google.maps.Marker({
+            map: map,
+            position: coords,
             icon: {
-      url: "http://maps.google.com/mapfiles/arrow.png"
-    }
+                url: "http://maps.google.com/mapfiles/arrow.png"
+            }
         });
 
     }
 
-    function failure(){}
-</script>
+        function failure() { }
+    </script>
     <style type="text/css">
-        #map{
-            width:80%;
-            height:60vh;
+        #map {
+            width: 80%;
+            height: 60vh;
             padding: 10px;
         }
     </style>
 </head>
+
 <body>
 
 
 
-<h1>Map</h1>
-<div id="map" ></div>
-<div id="user_location" style="background-color:tomato;"></div>
+    <h1>Map</h1>
+    <div id="map"></div>
+    <div id="user_location" style="background-color:tomato;"></div>
 
-<a href="{% url 'Home' %}" >back to homepage</a><br>
-<a href="{% url 'input_location' %}">add a new hidden location</a><br>
-
-
-<style>
-.myTable{
-    font-size: 12px;
-    min-width: 400px;
-    overflow: hidden;
-    border-radius: 7px 7px 0 0;
-    box-shadow: 0 0 20px rgba(0, 0, 0, .15);
-    border:1px solid black;
-}
-
-.myTable td, .myTable th {
-   border:1px solid black;
-  }
+    <a href="{% url 'Home' %}">back to homepage</a><br>
+    <a href="{% url 'input_location' %}">add a new hidden location</a><br>
 
 
+    <style>
+        .myTable {
+            font-size: 12px;
+            min-width: 400px;
+            overflow: hidden;
+            border-radius: 7px 7px 0 0;
+            box-shadow: 0 0 20px rgba(0, 0, 0, .15);
+            border: 1px solid black;
+        }
 
-
-
-</style>
-<div class="linkholder">
+        .myTable td,
+        .myTable th {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="linkholder">
         {% if mydata.count == 0 %}
-            <div> No data available </div>
+        <div> No data available </div>
         {% else %}
-            <table id="ourtable3" class="myTable m-3">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Address</th>
-                        <th>Zipcode</th>
-                        <th>City</th>
-                        <th>Country</th>
-                        <th>longitude</th>
-                        <th>latitude</th>
-                        <th>place_id</th>
+        <table id="ourtable3" class="myTable m-3">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Address</th>
+                    <th>Zipcode</th>
+                    <th>City</th>
+                    <th>Country</th>
+                    <th>longitude</th>
+                    <th>latitude</th>
+                    <th>place_id</th>
 
-                    </tr>
-                </thead>
+                </tr>
+            </thead>
 
-                <tbody>
-                    {% for a in mydata %}
-                    <tr>
-                        <td> {{a.id}} </td>
-                        <td> {{a.address}} </td>
-                        <td> {{a.zipcode}} </td>
-                        <td> {{a.city}} </td>
-                        <td> {{a.country}} </td>
-                        <td> {{a.longitude}} </td>
-                        <td> {{a.latitude}} </td>
-                        <td> {{a.place_id}} </td>
-                    </tr>
+            <tbody>
+                {% for a in mydata %}
+                <tr>
+                    <td> {{a.id}} </td>
+                    <td> {{a.address}} </td>
+                    <td> {{a.zipcode}} </td>
+                    <td> {{a.city}} </td>
+                    <td> {{a.country}} </td>
+                    <td> {{a.longitude}} </td>
+                    <td> {{a.latitude}} </td>
+                    <td> {{a.place_id}} </td>
+                </tr>
 
-                    {% endfor%}
-                </tbody>
+                {% endfor%}
+            </tbody>
 
 
-            </table>
+        </table>
         {% endif %}
-     </div>
+    </div>
 
 </body>
-</html>
 
+</html>
+{#consulted chatGPT for using document in js to show information on page#}
 {#learned how to use html table from this URl: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_table6#}
 {#leared how to change icons from this URL:https://sites.google.com/site/gmapsdevelopment/#}
-{#learned how to do geo coding from this series of videos: https://www.youtube.com/watch?v=sasx2ppol5c&list=PLmEKHA8iFrmD6YEiuROna3JmNC7fjq6go&index=5#}
+{#learned how to do geo coding from this series of videos:
+https://www.youtube.com/watch?v=sasx2ppol5c&list=PLmEKHA8iFrmD6YEiuROna3JmNC7fjq6go&index=5#}
