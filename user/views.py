@@ -19,7 +19,9 @@ class location_form(forms.Form):
     address = forms.CharField(max_length=400, label="address", required=True)
     city = forms.CharField(max_length=400, label="city", required=True)
     country = forms.CharField(max_length=400, label="country", required=True)
-    zipcode = forms.CharField(max_length=400, label="zipcode", required=True)
+    address = forms.CharField(max_length=400, label="address", required=True)
+    hint = forms.CharField(max_length=400, label="hint", required=True)
+    clue = forms.CharField(max_length=400, label="clue", required=True)
 
 
 def input_location(request):
@@ -33,6 +35,8 @@ def input_location(request):
             loca.city = form.cleaned_data["city"]
             loca.country = form.cleaned_data["country"]
             loca.address = form.cleaned_data["address"]
+            loca.hint = form.cleaned_data["hint"]
+            loca.clue = form.cleaned_data["clue"]
 
             if location.objects.filter(zipcode=loca.zipcode, city=loca.city, country=loca.country,
                                        address=loca.address).first() is not None:

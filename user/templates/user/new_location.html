@@ -74,6 +74,27 @@
             <div class="col-4">
                 Submission History
             </div>
+            <div class="row mb-3">
+                <div class="col-md-1">
+                    <label for="hint" class="form-label">Clue</label>
+                </div>
+                <div class="col-md-10">
+                    {{ form.clue }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-1">
+                    <label for="hint" class="form-label">Hint</label>
+                </div>
+                <div class="col-md-10">
+                    {{ form.hint }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+        <div class="mt-4">
+            <a class="btn btn-primary" href="{% url 'Home' %}">Back to Homepage</a>
+            <a class="btn btn-secondary ms-2" href="{% url 'Map' %}">Back to Map Page</a>
         </div>
     </div>
 </body>

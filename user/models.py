@@ -9,9 +9,8 @@ class User(models.Model):
     is_admin=models.BooleanField(default=False)
 
 class Game(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    game_description = models.CharField(max_length=400, null=True)
     game_name = models.CharField(max_length=400)
-    is_approved = models.BooleanField(default=False)
 
 class location(models.Model):
     """ this is the database for Hidden location information """
@@ -24,5 +23,6 @@ class location(models.Model):
     longitude = models.CharField(max_length=400,blank=True,null=True)
     place_id = models.CharField(max_length=400,blank=True,null=True)
     hint = models.CharField(max_length=400, null=True)
+    clue = models.CharField(max_length=400, null=True)
     game_id = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
-
+    is_approved = models.BooleanField(default=False)
