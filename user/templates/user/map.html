@@ -1,61 +1,148 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="HTML, CSS" />
+    <title>{% block title %}{% endblock %}</title>
+    {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Ubuntu:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'user/home.css' %} " />
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap"></script>
     <script>
-    x=navigator.geolocation;
-    x.getCurrentPosition(success,failure);
-    function success(position){
-        var myLat=position.coords.latitude;
-        var myLong=position.coords.longitude
+        x = navigator.geolocation;
+        x.getCurrentPosition(success, failure);
+        function success(position) {
+            var myLat = position.coords.latitude;
+            var myLong = position.coords.longitude
 
-        var user_location = document.getElementById("user_location");
-        var textNode1 = document.createTextNode("current location longitude：" + myLong);
-        var textNode2 = document.createTextNode("current location latitude：" + myLat);
-        user_location.appendChild(textNode1);
-        user_location.appendChild(document.createElement("br"));
-        user_location.appendChild(textNode2);
+            var user_location = document.getElementById("user_location");
+            var textNode1 = document.createTextNode("current location longitude：" + myLong);
+            var textNode2 = document.createTextNode("current location latitude：" + myLat);
+            user_location.appendChild(textNode1);
+            user_location.appendChild(document.createElement("br"));
+            user_location.appendChild(textNode2);
 
-        var coords=new google.maps.LatLng(myLat,myLong);
-        var mapOptions={
-            zoom: 16,
-            center: coords,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            var coords = new google.maps.LatLng(myLat, myLong);
+            var mapOptions = {
+                zoom: 16,
+                center: coords,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: coords,
+                icon: {
+                    url: "http://maps.google.com/mapfiles/arrow.png"
+                }
+            });
+
         }
-        var map=new google.maps.Map(document.getElementById("map"),mapOptions);
-        var marker= new google.maps.Marker({
-            map:map,
-            position:coords,
-            icon: {
-      url: "http://maps.google.com/mapfiles/arrow.png"
-    }
-        });
 
-    }
-
-    function failure(){}
-</script>
+        function failure() { }
+    </script>
     <style type="text/css">
-        #map{
-            width:100%;
-            height:70vh;
+        #map {
+            width: 100%;
+            height: 70vh;
             padding: 10px;
         }
     </style>
 </head>
+
 <body>
-
-<h1>Map</h1>
-
-
-<div id="map"></div>
-<div id="user_location" style="background-color:tomato;"></div>
-<a href="{% url 'Home' %}">back to homepage</a><br>
-
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'Home' %}">UVA Scavenger Hunt</a>
+            </div>
+            <div class="btn-group">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'Home' %}">Home</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'input_location' %}">Create Point</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'Map' %}">Map
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="logout">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+        </div>
+    </nav>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-8">
+                <div class="row">
+                    <span class="border">
+                        <div id="map"></div>
+                        <div id="user_location" style="background-color:tomato;"></div>
+                    </span>
+                </div>
+                <div class="row">
+                </div>
+            </div>
+            <div class="col-4">
+                <span class="border">
+                    <h1 style="font-family: Ubuntu;">Leaderboard</h1>
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Group</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Handle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </span>
+            </div>
+        </div>
+    </div>
+    </div>
+    <footer class="bg-dark bg-info text-center text-lg-start fixed-bottom">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+            <a class="navbar-brand" href="https://github.com/orgs/uva-cs3240-f23/teams/b-27"
+                style="font-family: Ubuntu;">
+                &copy;github Repo
+            </a>
+        </div>
+    </footer>
 
 </body>
+
 </html>
 
 

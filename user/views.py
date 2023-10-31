@@ -98,5 +98,6 @@ def Map(request):
 
 
 
+
 #learned how to use logout from this URL: https://www.youtube.com/watch?v=yO6PP0vEOMc
 # learned more about forms from this URL: https://docs.djangoproject.com/en/4.2/topics/forms/
