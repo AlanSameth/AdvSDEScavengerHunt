@@ -16,12 +16,12 @@ import googlemaps
 
 
 class location_form(forms.Form):
-    address = forms.CharField(max_length=400, label="address", required=True)
-    city = forms.CharField(max_length=400, label="city", required=True)
-    country = forms.CharField(max_length=400, label="country", required=True)
-    address = forms.CharField(max_length=400, label="address", required=True)
-    hint = forms.CharField(max_length=400, label="hint", required=True)
-    clue = forms.CharField(max_length=400, label="clue", required=True)
+    address = forms.CharField(max_length=400, label="Address", required=True)
+    city = forms.CharField(max_length=400, label="City", required=True)
+    country = forms.CharField(max_length=400, label="Country", required=True)
+    zipcode = forms.CharField(max_length=400, label="Zipcode", required=True)
+    hint = forms.CharField(max_length=400, label="Hint", required=True)
+    clue = forms.CharField(max_length=400, label="Clue", required=True)
 
 
 def input_location(request):
