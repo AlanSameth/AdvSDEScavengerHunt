@@ -22,6 +22,13 @@ class location_form(forms.Form):
     hint = forms.CharField(max_length=400, label="Hint", required=True)
     clue = forms.CharField(max_length=400, label="Clue", required=True)
 
+class approvalForm(forms.ModelForm):
+    is_approved=forms.BooleanField()
+    class Meta:
+        model = location
+        fields = ['is_approved']
+
+
 
 def input_location(request):
     if not request.user.is_authenticated:
@@ -52,6 +59,8 @@ def input_location(request):
             loca.latitude = lat
             loca.longitude = lng
             loca.place_id = place_id
+            user_temp = User.objects.filter(user_email=request.user.email).first()
+            loca.user_id=user_temp
             loca.save()
 
             return HttpResponseRedirect(reverse("Map"))
@@ -111,7 +120,7 @@ def Map(request):
     if request.user.is_authenticated:
         user_new = User.objects.filter(user_email=request.user.email).first()
         if user_new.is_admin:
-            hidden_location_list = location.objects.filter(place_id__isnull=False)
+            hidden_location_list = location.objects.filter(place_id__isnull=False,is_approved=True,looked_by_admin=True)
             locations = []
 
             for a in hidden_location_list:
@@ -141,9 +150,50 @@ def Map(request):
 
 
 
+def approval(request):
+    if request.user.is_authenticated:
+        user_new = User.objects.filter(user_email=request.user.email).first()
+        if user_new.is_admin:
+            if request.method == "POST":
+                location_list_approved=request.POST.getlist('box')
+                location_list_disapproved=request.POST.getlist('box_not')
+                print("location list: ",location_list_approved)
+                for i in location_list_approved:
+                    location.objects.filter(id=int(i)).update(is_approved=True,looked_by_admin=True)
+                for j in location_list_disapproved:
+                    location.objects.filter(id=int(j)).update(is_approved=False,looked_by_admin=True)
+                return HttpResponseRedirect(reverse("Home"))
+            else:
+                hidden_location_need_approve = location.objects.filter(place_id__isnull=False,is_approved=False,looked_by_admin=False)
+                locations = []
+                for a in hidden_location_need_approve:
+                    data = {
+                        'name': a.address+', '+a.city+', '+a.country,
+                        'id': a.id
+                    }
+                    locations.append(data)
+                return render(request, "user/approve.html", { "locations": locations})
+        else:
+            return HttpResponseRedirect(reverse("Home"))
+    else:
+        return HttpResponseRedirect(reverse("Home"))
 
+def your_location(request):
+    if request.user.is_authenticated:
+        user_new = User.objects.filter(user_email=request.user.email).first()
+        hidden_locations = location.objects.filter(place_id__isnull=False, user_id=user_new)
+        locations = []
+        for a in hidden_locations:
+            data = {
+                'name': a.address + ', ' + a.city + ', ' + a.country,
+                'approved': a.is_approved,
+                'status': a.looked_by_admin
+            }
+            locations.append(data)
+        return render(request, "user/your_location.html", {"locations": locations})
 
-
+    else:
+        return HttpResponseRedirect(reverse("Home"))
 
 #learned how to use logout from this URL: https://www.youtube.com/watch?v=yO6PP0vEOMc
 # learned more about forms from this URL: https://docs.djangoproject.com/en/4.2/topics/forms/

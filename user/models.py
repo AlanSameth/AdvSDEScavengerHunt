@@ -27,3 +27,4 @@ class location(models.Model):
     game_id = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     is_approved = models.BooleanField(default=False)
+    looked_by_admin=models.BooleanField(default=False)

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+</head>
+<body>
+<h1>Hidden locations waiting for approve</h1><br/>
+<form action="{% url 'approval' %}" method=POST>
+    {% csrf_token %}
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+    <tr>
+        <th scope="col">Hidden_location</th>
+        <th scope="col">Approval</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for location in locations %}
+        <tr>
+        <td>
+            {{ location.name }}
+        </td>
+        <td>
+            <div class="form-check">
+                <label for="box" > approve </label>
+                <input class="form-check-input" type="checkbox" value={{ location.id }} name="box">
+
+            </div>
+            <div class="form-check">
+                <label for="box_not" > disapprove </label>
+                <input class="form-check-input" type="checkbox" value={{ location.id }} name="box_not">
+            </div>
+        </td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+<button class="btn btn-primary" type="submit">submit</button>
+</form>
+<br/>
+
+
+
+
+
+
+
+</body>
+</html>
