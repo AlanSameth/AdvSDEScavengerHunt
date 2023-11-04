@@ -4,7 +4,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <script src="https://apis.google.com/js/platform.js"></script>
     <meta name="google-signin-client_id"
         content="943788471911-pt9a1gjjvgvfn3lg98kddq118medg0fd.apps.googleusercontent.com">
@@ -21,7 +20,7 @@
     <link rel="stylesheet" href="{% static 'user/home.css' %} " />
 </head>
 
-<body>
+<body style="background-color: #e3f2fd">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
@@ -55,11 +54,91 @@
             </div>
         </div>
     </nav>
-    <form action="{% url 'input_location' %}" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit"><br>
-    </form>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-8">
+                <form action="{% url 'input_location' %}" method="post">
+                    {% csrf_token %}
+                    <div class="card" style="width: 40rem; background-color: white;">
+                        <div class="card-header">
+                            <h4>Create New Location</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-6">
+                                <div class="col-md-2">
+                                    <label for="address" class="form-label">Address :</label>
+                                </div>
+                                <div class="col-md-10">
+                                    {{ form.address }}
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <div class="col-md-2">
+                                    <label for="zipcode" class="form-label">Zip Code :</label>
+                                </div>
+                                <div class="col-md-10">
+                                    {{ form.zipcode }}
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <div class="col-md-2">
+                                    <label for="city" class="form-label">City :</label>
+                                </div>
+                                <div class="col-md-10">
+                                    {{ form.city }}
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <div class="col-md-2">
+                                    <label for="country" class="form-label">Country :</label>
+                                </div>
+                                <div class="col-md-10">
+                                    {{ form.country }}
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <div class="col-md-2">
+                                    <label for="hint" class="form-label">Clue :</label>
+                                </div>
+                                <div class="col-md-10">
+                                    {{ form.clue }}
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <div class="col-md-2">
+                                    <label for="hint" class="form-label">Hint :</label>
+                                </div>
+                                <div class="col-md-2">
+                                    {{ form.hint }}
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-4">
+                <h1>Submission History</h1>
+                <table class="table ">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% if submissions %}
+                        {% for location in submissions%}
+                            <th scope="row"> 1</th>
+                            <td> {{location.address}}</td>
+                            <td> {{location.is_approved}}</td>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
 </body>
 
 </html>
