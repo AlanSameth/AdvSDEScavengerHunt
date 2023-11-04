@@ -69,21 +69,17 @@ class MapTests(TestCase):
 
 class SubmissionTests(TestCase):
     def test_create_game(self):
-        name = "dummy"
-        email = "User@virginia.edu"
-        User1 = create_User(name, email, False)
-        User1.save()
-        Game1 = Game.objects.create(user_id=User1, game_name="game")
+        Game1 = Game.objects.create(game_description="best game ever", game_name="game")
         Game1.save()
         self.assertIn(Game1, Game.objects.all())
 
-    def test_create_location_for_game(self):
+    def test_create_location_for_user_and_game(self):
         name = "dummy"
         email = "User@virginia.edu"
         User1 = create_User(name, email, False)
         User1.save()
-        Game1 = Game.objects.create(user_id=User1, game_name="game")
+        Game1 = Game.objects.create(game_description="best game ever", game_name="game")
         Game1.save()
-        location1 = location.objects.create(zipcode="1", city="home", country="USA", address="1234 road street", hint= "turn around", game_id=Game1)
+        location1 = location.objects.create(zipcode="1", city="home", country="USA", address="1234 road street", hint= "turn around", game_id=Game1, user_id=User1)
         location1.save()
         self.assertIn(location1, location.objects.all())
