@@ -8,7 +8,8 @@
     <script>
     x=navigator.geolocation;
     {#x.getCurrentPosition(success,failure);#}
-    x.watchPosition(success,failure,{enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 1});
+    options={enableHighAccuracy: false , maximumAge: 0, distanceFilter: 1,timeout: 100}
+    x.watchPosition(success,failure,options);
     var count=0;
     var map;
     var marker_current
@@ -77,49 +78,24 @@
         if(count==1){
             initmap(coords,infoWindow)
         }
-        marker_current.setPosition(coords)
+        if(marker_current.position.latitude!=coords.latitude||marker_current.position.longitude!=coords.longitude){
+            marker_current.setPosition(coords)
+        }
+
 
         var locations = {{ locations|safe}};
+        var flag=false
         locations.forEach(function (data){
             console.log(haversine_distance(data.lng, data.lat,myLong,myLat))
             if(haversine_distance(data.lng, data.lat,myLong,myLat)<=100){
-                window.alert("You are very close to the hidden place!");
-                console.log("11111")
+                flag=true;
             }
         });
-        {#var mapOptions={#}
-        {#    zoom: 16,#}
-        {#    center: coords,#}
-        {#    mapTypeId: google.maps.MapTypeId.ROADMAP}#}
-        {#var map=new google.maps.Map(document.getElementById("map"),mapOptions);#}
-        {#var locations = {{ locations|safe}};#}
-        {#locations.forEach(function (data){#}
-        {#    var marker = new google.maps.Marker({#}
-        {#        position: {lat: data.lat, lng: data.lng},#}
-        {#        map: map,#}
-        {#        title: data.name#}
-        {#    });#}
-        {##}
-        {#    var infowindow = new google.maps.InfoWindow({#}
-        {#        content: data.name,#}
-        {#    });#}
-        {##}
-        {#    infoWindow.push(infowindow)#}
-        {#    marker.addListener('click', function(){#}
-        {#        infoWindow.forEach(function(iw){#}
-        {#            iw.close();#}
-        {#        });#}
-        {##}
-        {#        infowindow.open(map, marker)#}
-        {#        }); });#}
+        if(flag){
+            window.alert("You are very close to the hidden place!");
 
+        }
 
-      {#  var marker_current= new google.maps.Marker({#}
-      {#      map:map,#}
-      {#      position:coords,#}
-      {#      icon: {#}
-      {#url: "http://maps.google.com/mapfiles/arrow.png"}#}
-      {#  });#}
 
     }
 

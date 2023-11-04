@@ -88,7 +88,18 @@ def Map(request):
             print(locations)
             return render(request, "user/map_admin.html", {"mydata": hidden_location_list,"locations":locations})
         else:
-            return render(request, "user/map.html")
+            hidden_location_list = location.objects.filter(place_id__isnull=False)
+            locations = []
+
+            for a in hidden_location_list:
+                data = {
+                    'lat': float(a.latitude),
+                    'lng': float(a.longitude),
+                    'name': a.address
+                }
+                locations.append(data)
+            print(locations)
+            return render(request, "user/map.html",{"mydata": hidden_location_list,"locations":locations})
     else:
         return HttpResponseRedirect(reverse("Home"))
 
