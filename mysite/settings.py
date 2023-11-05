@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+import secrets
 from pathlib import Path
 import dj_database_url
 from django.contrib import staticfiles
@@ -21,7 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ztmy(t^t4l+d&vqnx*r=s85*4-tiwva$7tuk&$!fu=ai-ebi@1'
+SECRET_KEY = os.environ.get("SECRET_KEY",
+    default=secrets.token_urlsafe(nbytes=64),)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
