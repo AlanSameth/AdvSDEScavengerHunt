@@ -1,8 +1,19 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="HTML, CSS" />
+    <title>{% block title %}{% endblock %}</title>
+    {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Ubuntu:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'user/home.css' %} " />
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap"></script>
     <script>
@@ -110,15 +121,100 @@
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd; margin-bottom: 50px;">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'Home' %}">UVA Scavenger Hunt</a>
+            </div>
+            <div class="btn-group">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'Home' %}">Home</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'input_location' %}">Create Point</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'Map' %}">Map</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'approval' %}">Approve Location</a><br>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="logout">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+        </div>
+    </nav>
 
 
 
-<h1>Map</h1>
-<div id="map" ></div>
-<div id="user_location" style="background-color:tomato;"></div>
-
-<a href="{% url 'Home' %}" >back to homepage</a><br>
-<a href="{% url 'input_location' %}">add a new hidden location</a><br>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-7">
+                <div class="row">
+                    <span class="border">
+                        <div id="map"></div>
+                        <div id="user_location" style="background-color:tomato;"></div>
+                    </span>
+                </div>
+                <div class="row">
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="linkholder">
+                    {% if mydata.count == 0 %}
+                        <div> No data available </div>
+                    {% else %}
+                        <table id="ourtable3" class="myTable m-3">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Address</th>
+                                    <th>Zipcode</th>
+                                    <th>City</th>
+                                    <th>Country</th>
+                                    <th>longitude</th>
+                                    <th>latitude</th>
+                                    <th>place_id</th>
+            
+                                </tr>
+                            </thead>
+            
+                            <tbody>
+                                {% for a in mydata %}
+                                <tr>
+                                    <td> {{a.id}} </td>
+                                    <td> {{a.address}} </td>
+                                    <td> {{a.zipcode}} </td>
+                                    <td> {{a.city}} </td>
+                                    <td> {{a.country}} </td>
+                                    <td> {{a.longitude}} </td>
+                                    <td> {{a.latitude}} </td>
+                                    <td> {{a.place_id}} </td>
+                                </tr>
+            
+                                {% endfor%}
+                            </tbody>
+            
+            
+                        </table>
+                    {% endif %}
+                 </div>
+            </div>
+        </div>
+    </div>
 
 
 <style>
@@ -140,45 +236,6 @@
 
 
 </style>
-<div class="linkholder">
-        {% if mydata.count == 0 %}
-            <div> No data available </div>
-        {% else %}
-            <table id="ourtable3" class="myTable m-3">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Address</th>
-                        <th>Zipcode</th>
-                        <th>City</th>
-                        <th>Country</th>
-                        <th>longitude</th>
-                        <th>latitude</th>
-                        <th>place_id</th>
-
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for a in mydata %}
-                    <tr>
-                        <td> {{a.id}} </td>
-                        <td> {{a.address}} </td>
-                        <td> {{a.zipcode}} </td>
-                        <td> {{a.city}} </td>
-                        <td> {{a.country}} </td>
-                        <td> {{a.longitude}} </td>
-                        <td> {{a.latitude}} </td>
-                        <td> {{a.place_id}} </td>
-                    </tr>
-
-                    {% endfor%}
-                </tbody>
-
-
-            </table>
-        {% endif %}
-     </div>
 
 </body>
 </html>
