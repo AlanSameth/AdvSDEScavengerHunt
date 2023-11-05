@@ -5,8 +5,47 @@
     <meta charset="UTF-8">
     <title>Title</title>
     {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Ubuntu:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'user/home.css' %} " />
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'Home' %}">UVA Scavenger Hunt</a>
+            </div>
+            <div class="btn-group">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'Home' %}">Home</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'input_location' %}">Create Point</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'Map' %}">Map</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="logout">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+        </div>
+    </nav>
 <h1>Hidden locations waiting for approve</h1><br/>
 <form action="{% url 'approval' %}" method=POST>
     {% csrf_token %}
@@ -26,12 +65,12 @@
         <td>
             <div class="form-check">
                 <label for="box" > approve </label>
-                <input class="form-check-input" type="checkbox" value={{ location.id }} name="box">
+                <input class="form-check-input" type="radio" name="approval_{{ location.id }}" name="box" value={{ location.id }}>
 
             </div>
             <div class="form-check">
                 <label for="box_not" > disapprove </label>
-                <input class="form-check-input" type="checkbox" value={{ location.id }} name="box_not">
+                <input class="form-check-input" type="radio" name="approval_{{ location.id }}" name="box_not" value={{ location.id }}>
             </div>
         </td>
         </tr>
@@ -42,12 +81,6 @@
 <button class="btn btn-primary" type="submit">submit</button>
 </form>
 <br/>
-
-
-
-
-
-
 
 </body>
 </html>

@@ -34,6 +34,8 @@ def input_location(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("Home"))
     if request.method == "POST":
+        data = location.objects.all()
+        context = {"locations": data}
         form = location_form(request.POST)
         if form.is_valid():
             loca = location()
@@ -68,6 +70,7 @@ def input_location(request):
     else:
         form = location_form()
     return render(request, "user/new_location.html", {"form": form})
+
 
 
 def home_page(request):
