@@ -7,16 +7,17 @@
 <body>
 <form method="POST" enctype="multipart/form-data">
 
-    <!-- Management data of formset -->
+
     {{ GameFormSet.management_data }}
 
-    <!-- Security token -->
+
     {% csrf_token %}
 
-    <!-- Using the formset -->
+
     {{ GameFormSet.as_p }}
 
     <input type="submit" value="Submit">
 </form>
 </body>
 </html>
+
