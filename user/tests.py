@@ -1,11 +1,12 @@
 import datetime
 from unittest import mock
 
-from django.test import TestCase
+import django.contrib.auth.models
+from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
 from .models import User, location, Game
-from .views import home_page
+from .views import home_page, input_location
 
 
 # Create your tests here.
@@ -83,3 +84,28 @@ class SubmissionTests(TestCase):
         location1 = location.objects.create(zipcode="1", city="home", country="USA", address="1234 road street", hint= "turn around", game_id=Game1, user_id=User1)
         location1.save()
         self.assertIn(location1, location.objects.all())
+
+class SiteTests(TestCase):
+    def test_map(self):
+        self.factory = RequestFactory()
+        self.user = django.contrib.auth.models.User
+        request = self.factory.get("/map")
+        request.user = self.user
+        response = input_location(request)
+        self.assertContains(response, "map")
+
+    def test_home(self):
+        self.factory = RequestFactory()
+        self.user = django.contrib.auth.models.User
+        request = self.factory.get("")
+        request.user = self.user
+        response = input_location(request)
+        self.assertContains(response, "Scavenger")
+
+    def test_input_location(self):
+        self.factory = RequestFactory()
+        self.user = django.contrib.auth.models.User
+        request = self.factory.get("/inputlocation")
+        request.user = self.user
+        response = input_location(request)
+        self.assertContains(response, "Location")
