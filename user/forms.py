@@ -6,7 +6,7 @@ from .models import Game, location
 class GameForm(ModelForm):
     class Meta:
         model = location
-        fields = ['zipcode', 'city', 'country','address','hint']
+        fields = ['zipcode', 'city', 'country','address','hint', 'clue']
 
 LocationFormSet = inlineformset_factory(Game, location, form = GameForm,
                                         extra=3, can_delete = False, min_num=3)
