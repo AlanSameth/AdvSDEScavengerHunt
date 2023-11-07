@@ -9,4 +9,6 @@ urlpatterns = [
     path("inputlocation/", views.input_location, name='input_location'),
     path("approval/", views.approval, name='approval'),
     path("your_location/", views.your_location, name='your_location'),
+    path("first_page_game/", views.first_page_game, name='first_page_game'),
+    path("<int:game_id>/input_game/", views.input_game, name='input_game'),
 ]

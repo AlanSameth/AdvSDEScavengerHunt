@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate
 from django.views.generic import CreateView
-
+from django.shortcuts import render, get_object_or_404
 from user.forms import LocationFormSet
 from user.models import User, location, Game
 from django.urls import reverse
 from django import forms
 from django.http import HttpResponseRedirect
 import googlemaps
+from django.forms import formset_factory
 
 
 # Create your views here.
@@ -21,6 +22,10 @@ class location_form(forms.Form):
     zipcode = forms.CharField(max_length=400, label="Zipcode", required=True)
     hint = forms.CharField(max_length=400, label="Hint", required=True)
     clue = forms.CharField(max_length=400, label="Clue", required=True)
+
+class game_form(forms.Form):
+    game_name = forms.CharField(max_length=400, label="game_name", required=True)
+    game_description = forms.CharField(max_length=400, label="game_description", required=True)
 
 class approvalForm(forms.ModelForm):
     is_approved=forms.BooleanField()
@@ -72,6 +77,75 @@ def input_location(request):
     return render(request, "user/new_location.html", {"form": form})
 
 
+def first_page_game(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("Home"))
+
+    if request.method == "POST":
+        form = game_form(request.POST)
+
+        # print formset data if it is valid
+        ga = Game()
+        if form.is_valid():
+            ga.game_name = form.cleaned_data["game_name"]
+            ga.game_description = form.cleaned_data["game_description"]
+            user_temp = User.objects.filter(user_email=request.user.email).first()
+            ga.user_id = user_temp
+            ga.save()
+
+        return HttpResponseRedirect(reverse("input_game",args=(ga.id,)))
+    else:
+        form = game_form()
+    return render(request, "user/create_game_page1.html", {"form": form})
+
+
+def input_game(request,game_id):
+    game_ob = get_object_or_404(Game, pk=game_id)
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("Home"))
+    if request.method == "POST":
+        GameFormSet = formset_factory(location_form, extra=3)
+        formset = GameFormSet(request.POST)
+
+        if formset.is_valid():
+            # ga = Game()
+            # ga.game_name = form.cleaned_data["game_description"]
+            # ga.game_description = form.cleaned_data["game_description"]
+            # user_temp = User.objects.filter(user_email=request.user.email).first()
+            # ga.user_id = user_temp
+            for form in formset:
+                loca = location()
+                loca.zipcode = form.cleaned_data["zipcode"]
+                loca.city = form.cleaned_data["city"]
+                loca.country = form.cleaned_data["country"]
+                loca.address = form.cleaned_data["address"]
+                loca.hint = form.cleaned_data["hint"]
+                loca.clue = form.cleaned_data["clue"]
+
+                adress_string = str(loca.address) + ", " + str(loca.zipcode) + ", " + str(
+                    loca.city) + ", " + str(loca.country)
+                gmaps = googlemaps.Client(key='AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc')
+                result = gmaps.geocode(adress_string)[0]
+                lat = result.get('geometry', {}).get('location', {}).get('lat', None)
+                lng = result.get('geometry', {}).get('location', {}).get('lng', None)
+                place_id = result.get('place_id', {})
+
+                loca.latitude = lat
+                loca.longitude = lng
+                loca.place_id = place_id
+                loca.game_id=game_ob
+
+                loca.save()
+
+            return HttpResponseRedirect(reverse("Map"))
+
+    else:
+        GameFormSet = formset_factory(location_form, extra=3)
+    return render(request, "user/create_game_page2.html", {"GameFormSet": GameFormSet})
+
+
+
+
 
 def home_page(request):
     if request.user.is_authenticated:
@@ -87,6 +161,8 @@ def home_page(request):
             user_tosave = User(user_name=request.user.username, user_email=request.user.email)
             user_tosave.save()
     return render(request, "user/home.html")
+
+
 
 
 def logout_user(request):
