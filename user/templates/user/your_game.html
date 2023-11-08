@@ -11,22 +11,26 @@
 <table class="table table-striped table-hover table-bordered">
     <thead>
     <tr>
-        <th scope="col">Hidden_location_submitted</th>
+        <th scope="col">Games</th>
+        <th scope="col">Game Description</th>
         <th scope="col">Approved</th>
         <th scope="col">Status(checked by admin)</th>
     </tr>
     </thead>
     <tbody>
-    {% for location in locations %}
+    {% for game in games %}
         <tr>
         <td>
-            {{ location.name }}
+            <a href="{% url 'display_game_detail' game.id %}"> {{ game.name }}</a>
+        </td>
+            <td>
+            {{ game.dis }}
         </td>
         <td>
-            {{ location.approved }}
+            {{ game.approved }}
         </td>
           <td>
-            {{ location.status }}
+            {{ game.status }}
         </td>
         </tr>
     {% endfor %}

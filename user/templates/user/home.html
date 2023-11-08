@@ -120,7 +120,8 @@
   </div>
 
 {% if user.is_authenticated %}
-    <a href="{% url 'your_location' %}">check new submitted hidden locations</a><br>
+    <a href="{% url 'your_game' %}">check new submitted games</a><br>
+    <a href="{% url 'first_page_game' %}">submit new game</a><br>
 {% endif %}
 
   <footer class="bg-dark bg-info text-center text-lg-start fixed-bottom">

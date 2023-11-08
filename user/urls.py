@@ -11,7 +11,8 @@ urlpatterns = [
     path("map/", views.Map,name="Map"),
     path("inputlocation/", views.input_location, name='input_location'),
     path("approval/", views.approval, name='approval'),
-    path("your_location/", views.your_location, name='your_location'),
+    path("your_game/", views.your_game, name='your_game'),
     path("first_page_game/", views.first_page_game, name='first_page_game'),
     path("<int:game_id>/input_game/", views.input_game, name='input_game'),
+    path("<int:game_id>/game_detail/", views.display_game_detail, name='display_game_detail'),
 ]
