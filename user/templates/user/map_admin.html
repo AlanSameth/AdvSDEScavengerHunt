@@ -24,6 +24,8 @@
     var count=0;
     var map;
     var marker_current
+    var infowindow_distance = new google.maps.InfoWindow({
+             content:"you are very close to the hidden location"});
     function haversine_distance(long1, lat1,long2,lat2) {
       var R = 3958.8;
       var rlat1 = lat1 * (Math.PI/180);
@@ -98,16 +100,14 @@
         var flag=false
         locations.forEach(function (data){
             console.log(haversine_distance(data.lng, data.lat,myLong,myLat))
-            if(haversine_distance(data.lng, data.lat,myLong,myLat)<=100){
+            if(haversine_distance(data.lng, data.lat,myLong,myLat)<=1000){
                 flag=true;
             }
         });
+
         if(flag){
-            window.alert("You are very close to the hidden place!");
-
-        }
-
-
+            infowindow_distance.close();
+            infowindow_distance.open(map,marker_current);}
     }
 
     function failure(){}
@@ -144,7 +144,7 @@
                             <a class="dropdown-item" href="{% url 'input_location' %}">Create Point</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="{% url 'Map' %}">Map</a>
+                            <a class="dropdown-item" href="{% url 'choose_game' %}">Choose Game</a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="{% url 'approval' %}">Approve Location</a><br>
