@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+</head>
+<body>
+<table class="table table-striped table-hover table-bordered">
+<thead>
+    <tr>
+        <th scope="col">Adress</th>
+        <th scope="col">Zipcode</th>
+        <th scope="col">City</th>
+        <th scope="col">Country</th>
+    </tr >
+</thead>
+<tbody>
+    {% for location in locations %}
+        <tr>
+        <td>
+            {{ location.address }}
+        </td>
+        <td> {{location.zipcode}} </td>
+            <td> {{location.city}} </td>
+            <td> {{location.country}} </td>
+        </tr>
+    {% endfor %}
+
+</tbody>
+</table>
+</body>
+</html>

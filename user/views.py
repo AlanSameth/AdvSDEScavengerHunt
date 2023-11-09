@@ -165,7 +165,7 @@ def home_page(request):
 
 
 
-def logout_user(request):
+def logout_user(request,game_id=None):
     logout(request)
     return redirect('/')
 
@@ -195,11 +195,12 @@ class SubmissionView(CreateView):
         return super(SubmissionView, self).form_valid(form)
 
 
-def Map(request):
+def Map(request,game_id):
     if request.user.is_authenticated:
         user_new = User.objects.filter(user_email=request.user.email).first()
         if user_new.is_admin:
-            hidden_location_list = location.objects.filter(place_id__isnull=False,is_approved=True,looked_by_admin=True)
+            game_ob = get_object_or_404(Game, pk=game_id)
+            hidden_location_list = location.objects.filter(place_id__isnull=False,game_id=game_ob)
             locations = []
 
             for a in hidden_location_list:
@@ -210,9 +211,10 @@ def Map(request):
                 }
                 locations.append(data)
             print(locations)
-            return render(request, "user/map_admin.html", {"mydata": hidden_location_list, "locations": locations})
+            return render(request, "user/map_admin.html", {"mydata": hidden_location_list, "locations": locations,"game_id":game_id})
         else:
-            hidden_location_list = location.objects.filter(place_id__isnull=False)
+            game_ob = get_object_or_404(Game, pk=game_id)
+            hidden_location_list = location.objects.filter(place_id__isnull=False, game_id=game_ob)
             locations = []
 
             for a in hidden_location_list:
@@ -234,43 +236,61 @@ def approval(request):
         user_new = User.objects.filter(user_email=request.user.email).first()
         if user_new.is_admin:
             if request.method == "POST":
-                location_list_approved=request.POST.getlist('box')
-                location_list_disapproved=request.POST.getlist('box_not')
-                print("location list: ",location_list_approved)
-                for i in location_list_approved:
-                    location.objects.filter(id=int(i)).update(is_approved=True,looked_by_admin=True)
-                for j in location_list_disapproved:
-                    location.objects.filter(id=int(j)).update(is_approved=False,looked_by_admin=True)
+                game_list_approved=request.POST.getlist('box')
+                game_list_disapproved=request.POST.getlist('box_not')
+                for i in game_list_approved:
+                    Game.objects.filter(id=int(i)).update(is_approved=True,looked_by_admin=True)
+                for j in game_list_disapproved:
+                    Game.objects.filter(id=int(j)).update(is_approved=False,looked_by_admin=True)
                 return HttpResponseRedirect(reverse("Home"))
             else:
-                hidden_location_need_approve = location.objects.filter(place_id__isnull=False,is_approved=False,looked_by_admin=False)
-                locations = []
-                for a in hidden_location_need_approve:
+                game_need_approval = Game.objects.filter(is_approved=False,looked_by_admin=False)
+                games = []
+                for a in game_need_approval:
                     data = {
-                        'name': a.address+', '+a.city+', '+a.country,
-                        'id': a.id
+                        'name': a.game_name,
+                        'id': a.id,
+                        'dis': a.game_description
                     }
-                    locations.append(data)
-                return render(request, "user/approve.html", { "locations": locations})
+                    games.append(data)
+                return render(request, "user/approve.html", { "games": games})
         else:
             return HttpResponseRedirect(reverse("Home"))
     else:
         return HttpResponseRedirect(reverse("Home"))
 
-def your_location(request):
+def your_game(request):
     if request.user.is_authenticated:
         user_new = User.objects.filter(user_email=request.user.email).first()
-        hidden_locations = location.objects.filter(place_id__isnull=False, user_id=user_new)
-        locations = []
-        for a in hidden_locations:
+        Games = Game.objects.filter( user_id=user_new)
+        games = []
+        for a in Games:
             data = {
-                'name': a.address + ', ' + a.city + ', ' + a.country,
+                'name': a.game_name,
+                'dis': a.game_description,
+                'id': a.id,
                 'approved': a.is_approved,
                 'status': a.looked_by_admin
             }
-            locations.append(data)
-        return render(request, "user/your_location.html", {"locations": locations})
+            games.append(data)
+        return render(request, "user/your_game.html", {"games": games})
 
+    else:
+        return HttpResponseRedirect(reverse("Home"))
+
+def display_game_detail(request,game_id):
+    if request.user.is_authenticated:
+        game_ob = get_object_or_404(Game, pk=game_id)
+        locations=location.objects.filter(game_id=game_ob)
+        return render(request,"user/game_detail.html",{"locations":locations,'description': game_ob.game_description})
+    else:
+        return HttpResponseRedirect(reverse("Home"))
+
+
+def choose_game(request):
+    if request.user.is_authenticated:
+        Games = Game.objects.filter(is_approved=True, looked_by_admin=True)
+        return render(request, "user/choose_game.html", {"games": Games})
     else:
         return HttpResponseRedirect(reverse("Home"))
 

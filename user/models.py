@@ -28,6 +28,4 @@ class location(models.Model):
     hint = models.CharField(max_length=400, null=True)
     clue = models.CharField(max_length=400, null=True)
     game_id = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    is_approved = models.BooleanField(default=False)
-    looked_by_admin=models.BooleanField(default=False)
+    is_found = models.BooleanField(default=False)

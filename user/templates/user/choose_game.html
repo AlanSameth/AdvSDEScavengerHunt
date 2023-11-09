@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for game in games %}
+        <a href="{% url 'Map' game.id %}"> {{ game.game_name }}</a><br>
+{% endfor %}
+</body>
+</html>
