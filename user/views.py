@@ -137,7 +137,7 @@ def input_game(request,game_id):
 
                 loca.save()
 
-            return HttpResponseRedirect(reverse("Map"))
+            return HttpResponseRedirect(reverse("Home"))
 
     else:
         GameFormSet = formset_factory(location_form, extra=3)
