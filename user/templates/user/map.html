@@ -20,7 +20,7 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap"></script>
     <script>
         x = navigator.geolocation;
-        { #x.getCurrentPosition(success, failure);# }
+        //{ #x.getCurrentPosition(success, failure);# }
         options = { enableHighAccuracy: false, maximumAge: 0, distanceFilter: 1, timeout: 100 }
         x.watchPosition(success, failure, options);
         var count = 0;
@@ -76,8 +76,7 @@
             }
 
 
-            var locations = {{ locations| safe
-        }};
+            var locations = {{ locations| safe}};
         var flag = false
         locations.forEach(function (data) {
             console.log(haversine_distance(data.lng, data.lat, myLong, myLat))
@@ -169,13 +168,13 @@
                                     para1.innerText = "This is a Really Bad Hint ";
                                 }
                             </script>
+                            <div class="row">
+            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <button type="submit" class="btn btn-success">Submit</button>
         </div>
     </div>
     </div>
