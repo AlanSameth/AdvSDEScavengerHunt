@@ -163,8 +163,6 @@ def home_page(request):
     return render(request, "user/home.html")
 
 
-
-
 def logout_user(request,game_id=None):
     logout(request)
     return redirect('/')
