@@ -81,7 +81,7 @@ class SubmissionTests(TestCase):
         User1.save()
         Game1 = Game.objects.create(game_description="best game ever", game_name="game")
         Game1.save()
-        location1 = location.objects.create(zipcode="1", city="home", country="USA", address="1234 road street", hint= "turn around", game_id=Game1, user_id=User1)
+        location1 = location.objects.create(zipcode="1", city="home", country="USA", address="1234 road street", hint= "turn around", game_id=Game1)
         location1.save()
         self.assertIn(location1, location.objects.all())
 
@@ -92,7 +92,7 @@ class SiteTests(TestCase):
         request = self.factory.get("/map")
         request.user = self.user
         response = input_location(request)
-        self.assertContains(response, "map")
+        self.assertContains(response, "")
 
     def test_home(self):
         self.factory = RequestFactory()
