@@ -77,51 +77,18 @@
 
 
             var locations = {{ locations| safe}};
-        var flag = false
-        locations.forEach(function (data) {
-            console.log(haversine_distance(data.lng, data.lat, myLong, myLat))
-            if (haversine_distance(data.lng, data.lat, myLong, myLat) <= 10000) {
-                flag = true;
+            var flag = false
+            locations.forEach(function (data) {
+                console.log(haversine_distance(data.lng, data.lat, myLong, myLat))
+                if (haversine_distance(data.lng, data.lat, myLong, myLat) <= 10000) {
+                    flag = true;
+                }
+            });
+            if (flag) {
+                infowindow_distance.close();
+                infowindow_distance.open(map, marker_current);
             }
-        });
-        if (flag) {
-            infowindow_distance.close();
-            infowindow_distance.open(map, marker_current);
         }
-
-        function find_location(position) {
-            count++;
-
-            var myLat = position.coords.latitude;
-            var myLong = position.coords.longitude;
-            var user_location = document.getElementById("user_location");
-
-            user_location.innerHTML = "current location longitude：" + myLong + "<br>";
-            user_location.innerHTML += "current location latitude：" + myLat + "<br>";
-            user_location.innerHTML += "count：" + count;
-
-            var infoWindow = [];
-
-            var coords = new google.maps.LatLng(myLat, myLong);
-            if (count == 1) {
-                initmap(coords, infoWindow)
-            }
-            if (marker_current.position.latitude != coords.latitude || marker_current.position.longitude != coords.longitude) {
-                marker_current.setPosition(coords)
-            }
-
-
-            var locations = {{ locations| safe
-        }};
-        var flag = false
-        locations.forEach(function (data) {
-            console.log(haversine_distance(data.lng, data.lat, myLong, myLat))
-            if (haversine_distance(data.lng, data.lat, myLong, myLat) <= 10000) {
-                flag = true;
-            }
-        });
-        }
-
         function failure() { }
     </script>
     <style type="text/css">
