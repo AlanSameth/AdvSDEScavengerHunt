@@ -6,7 +6,7 @@ from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
 from .models import User, location, Game
-from .views import home_page, input_location
+from .views import home_page, input_location, your_game, approval, location_form, game_form
 
 
 # Create your tests here.
@@ -60,13 +60,16 @@ class UserModelTests(TestCase):
 
 class MapTests(TestCase):
     def test_location_creation(self):
-        q = location.objects.create(zipcode=12345, city='town', country='America', address= '180 road street', last_edited_time= datetime.time, latitude=0, longitude=0, place_id=1)
+        q = location.objects.create(zipcode=12345, city='town', country='America', address='180 road street',
+                                    last_edited_time=datetime.time, latitude=0, longitude=0, place_id=1)
         self.assertIsInstance(q, location)
 
     def test_location_exists(self):
-        q = location.objects.create(zipcode=12345, city='town', country='America', address= '180 road street', last_edited_time= datetime.time, latitude=0, longitude=0, place_id=1)
+        q = location.objects.create(zipcode=12345, city='town', country='America', address='180 road street',
+                                    last_edited_time=datetime.time, latitude=0, longitude=0, place_id=1)
         q.save()
         self.assertIn(q, location.objects.all())
+
 
 class SubmissionTests(TestCase):
     def test_create_game(self):
@@ -81,31 +84,51 @@ class SubmissionTests(TestCase):
         User1.save()
         Game1 = Game.objects.create(game_description="best game ever", game_name="game")
         Game1.save()
-        location1 = location.objects.create(zipcode="1", city="home", country="USA", address="1234 road street", hint= "turn around", game_id=Game1)
+        location1 = location.objects.create(zipcode="1", city="home", country="USA", address="1234 road street",
+                                            hint="turn around", game_id=Game1)
         location1.save()
         self.assertIn(location1, location.objects.all())
 
+
 class SiteTests(TestCase):
-    def test_map(self):
+    def test_your_game_page(self):
         self.factory = RequestFactory()
         self.user = django.contrib.auth.models.User
-        request = self.factory.get("/map")
+        request = self.factory.get("/your_game")
         request.user = self.user
-        response = input_location(request)
-        self.assertContains(response, "")
+        response = your_game(request)
+        self.assertContains(response, "games")
 
     def test_home(self):
         self.factory = RequestFactory()
         self.user = django.contrib.auth.models.User
         request = self.factory.get("")
         request.user = self.user
-        response = input_location(request)
+        response = home_page(request)
         self.assertContains(response, "Scavenger")
 
-    def test_input_location(self):
+    def test_input_location_page(self):
         self.factory = RequestFactory()
         self.user = django.contrib.auth.models.User
         request = self.factory.get("/inputlocation")
         request.user = self.user
         response = input_location(request)
         self.assertContains(response, "Location")
+
+    def test_location_form(self):
+        form = location_form(data={
+            'address': '123 Rd',
+            'city': 'Town',
+            'country': 'America',
+            'zipcode': '09876',
+            'hint': 'Hi',
+            'clue': 'Bye',
+        })
+        self.assertTrue(form.is_valid())
+
+    def test_game_form(self):
+        form = game_form(data={
+            'game_name': 'Test Game',
+            'game_description': 'Fun',
+        })
+        self.assertTrue(form.is_valid())

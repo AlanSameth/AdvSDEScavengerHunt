@@ -6,6 +6,7 @@ urlpatterns = [
     path("", views.home_page,name="Home"),
     path("logout/", views.logout_user),
     path("inputlocation/logout/", views.logout_user),
+    path("first_page_game/logout/", views.logout_user),
     path("<int:game_id>/map/logout/", views.logout_user),
     path("approval/logout/", views.logout_user),
     path("<int:game_id>/map/", views.Map,name="Map"),
