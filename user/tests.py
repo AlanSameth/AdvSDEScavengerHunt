@@ -6,7 +6,7 @@ from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
 from .models import User, location, Game
-from .views import home_page, input_location
+from .views import home_page, input_location, your_game, approval
 
 
 # Create your tests here.
@@ -86,23 +86,23 @@ class SubmissionTests(TestCase):
         self.assertIn(location1, location.objects.all())
 
 class SiteTests(TestCase):
-    def test_map(self):
+    def test_your_game_page(self):
         self.factory = RequestFactory()
         self.user = django.contrib.auth.models.User
-        request = self.factory.get("/map")
+        request = self.factory.get("/your_game")
         request.user = self.user
-        response = input_location(request)
-        self.assertContains(response, "")
+        response = your_game(request)
+        self.assertContains(response, "games")
 
     def test_home(self):
         self.factory = RequestFactory()
         self.user = django.contrib.auth.models.User
         request = self.factory.get("")
         request.user = self.user
-        response = input_location(request)
+        response = home_page(request)
         self.assertContains(response, "Scavenger")
 
-    def test_input_location(self):
+    def test_input_location_page(self):
         self.factory = RequestFactory()
         self.user = django.contrib.auth.models.User
         request = self.factory.get("/inputlocation")
