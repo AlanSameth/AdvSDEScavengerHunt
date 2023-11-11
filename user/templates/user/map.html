@@ -23,9 +23,11 @@
         //{ #x.getCurrentPosition(success, failure);# }
         options = { enableHighAccuracy: false, maximumAge: 0, distanceFilter: 1, timeout: 100 }
         x.watchPosition(success, failure, options);
+        var location_counter = 0;
+        var guesses = 0;
         var count = 0;
         var map;
-        var marker_current
+        var marker_current;
         var infowindow_distance = new google.maps.InfoWindow({
             content: "you are very close to the hidden location"
         });
@@ -64,6 +66,7 @@
             user_location.innerHTML = "current location longitude：" + myLong + "<br>";
             user_location.innerHTML += "current location latitude：" + myLat + "<br>";
             user_location.innerHTML += "count：" + count;
+            user_location.innerHTML += " Guesses：" + guesses;
 
             var infoWindow = [];
 
@@ -88,8 +91,35 @@
                 infowindow_distance.close();
                 infowindow_distance.open(map, marker_current);
             }
+            
         }
 
+        function submit_location(){
+            x.clearWatch(watchID);
+            x.watchPosition(check_location, failure, options);
+        }
+
+        function check_location(position) {
+            guesses++;
+            var para1 = document.getElementById("At");
+            var myLat = position.coords.latitude;
+            var myLong = position.coords.longitude;
+
+            var locations = {{ locations| safe}};
+            var flag = false
+            locations.forEach(function (data) {
+                console.log(haversine_distance(data.lng, data.lat, myLong, myLat))
+                if (haversine_distance(data.lng, data.lat, myLong, myLat) <= 100) {
+                    flag = true;
+                }
+            });
+            if (flag) {
+                para1.innerText("You are at the hidden location!");
+            }
+            else{
+                para1.innerText("You are not quite there yet to the location");
+            }
+        }
         function failure() { }
     </script>
     <style type="text/css">
@@ -171,9 +201,20 @@
                                     para1.innerText = "This is a Really Bad Hint ";
                                 }
                             </script>
-                            <div class="row">
-            <button type="submit" class="btn btn-success">Submit</button>
-                        </div>
+                            <div class="row"> 
+                                {% for location in mydata %}
+                                    <p>Address : {{ location.address }} Lat : {{location.latitude}} Long : {{location.longitude}}</p>
+                                {% endfor %}
+                                <button id="btn" onclick="submit_location()" type="button" class="btn btn-success">Submit</button>
+                                <p id="At">Waiting On Submission</p>
+                                <script>
+                                    function submit_location(){
+                                        navigator.geolocation.getCurrentPosition(position => {
+                                        input_location(position);
+                                        });
+                                    }
+                                </script>
+                            </div>
                         </div>
                     </div>
                 </div>
