@@ -96,7 +96,9 @@
 
         function submit_location(){
             x.clearWatch(watchID);
-            x.watchPosition(check_location, failure, options);
+            x.getCurrentPosition(position => {
+                check_location(position);
+            });
         }
 
         function check_location(position) {
