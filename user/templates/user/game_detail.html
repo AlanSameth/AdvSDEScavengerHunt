@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -12,29 +13,67 @@
         rel="stylesheet">
     <link rel="stylesheet" href="{% static 'user/home.css' %} " />
 </head>
-<body>
-<table class="table table-striped table-hover table-bordered">
-<thead>
-    <tr>
-        <th scope="col">Adress</th>
-        <th scope="col">Zipcode</th>
-        <th scope="col">City</th>
-        <th scope="col">Country</th>
-    </tr >
-</thead>
-<tbody>
-    {% for location in locations %}
-        <tr>
-        <td>
-            {{ location.address }}
-        </td>
-        <td> {{location.zipcode}} </td>
-            <td> {{location.city}} </td>
-            <td> {{location.country}} </td>
-        </tr>
-    {% endfor %}
 
-</tbody>
-</table>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'Home' %}">UVA Scavenger Hunt</a>
+            </div>
+            <div class="btn-group">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'Home' %}">Home</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'first_page_game' %}">Create Game</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'your_game' %}">Your Games</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'choose_game' %}">Start A Game!</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="logout">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+        </div>
+    </nav>
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Adress</th>
+                <th scope="col">Zipcode</th>
+                <th scope="col">City</th>
+                <th scope="col">Country</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for location in locations %}
+            <tr>
+                <td>
+                    {{ location.address }}
+                </td>
+                <td> {{location.zipcode}} </td>
+                <td> {{location.city}} </td>
+                <td> {{location.country}} </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
 </body>
+
 </html>

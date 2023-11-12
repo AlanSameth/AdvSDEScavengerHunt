@@ -8,10 +8,16 @@ body{
 .card{
     border-radius: 2px;
     border-color: gray;
-    background-color: aqua;
+    background-color: white;
 }
 .placeholder{
     height: 300px;
+}
+
+#StartGame {
+    max-height: 50px;
+    overflow-y: scroll;
+    transition: ease-in 0.5s;
 }
 
 .table{
@@ -24,4 +30,9 @@ body{
     margin-right: 10px;
     margin-bottom: 10px;
 }
+
+.dropdown-menu.dropdown-menu-wide {
+    min-width: 100%;
+    text-align: center;
+  }
 

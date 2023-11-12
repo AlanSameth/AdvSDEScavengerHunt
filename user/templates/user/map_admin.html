@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta charset="UTF-8">
@@ -15,38 +16,41 @@
         rel="stylesheet">
     <link rel="stylesheet" href="{% static 'user/home.css' %} " />
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap"></script>
     <script>
-    x=navigator.geolocation;
-    {#x.getCurrentPosition(success,failure);#}
-    options={enableHighAccuracy: false , maximumAge: 0, distanceFilter: 1,timeout: 100}
-    x.watchPosition(success,failure,options);
-    var count=0;
-    var map;
-    var marker_current
-    var infowindow_distance = new google.maps.InfoWindow({
-             content:"you are very close to the hidden location"});
-    function haversine_distance(long1, lat1,long2,lat2) {
-      var R = 3958.8;
-      var rlat1 = lat1 * (Math.PI/180);
-      var rlat2 = lat2 * (Math.PI/180);
-      var difflat = rlat2-rlat1;
-      var difflon = (long2-long1) * (Math.PI/180);
+        x = navigator.geolocation;
+        { #x.getCurrentPosition(success, failure);# }
+        options = { enableHighAccuracy: false, maximumAge: 0, distanceFilter: 1, timeout: 100 }
+        x.watchPosition(success, failure, options);
+        var count = 0;
+        var map;
+        var marker_current
+        var infowindow_distance = new google.maps.InfoWindow({
+            content: "you are very close to the hidden location"
+        });
+        function haversine_distance(long1, lat1, long2, lat2) {
+            var R = 3958.8;
+            var rlat1 = lat1 * (Math.PI / 180);
+            var rlat2 = lat2 * (Math.PI / 180);
+            var difflat = rlat2 - rlat1;
+            var difflon = (long2 - long1) * (Math.PI / 180);
 
-      var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
-      return d*1609.34;
-    }
-    function initmap(coords,infoWindow){
-        var mapOptions={
-            zoom: 16,
-            center: coords,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat / 2) * Math.sin(difflat / 2) + Math.cos(rlat1) * Math.cos(rlat2) * Math.sin(difflon / 2) * Math.sin(difflon / 2)));
+            return d * 1609.34;
         }
-        map=new google.maps.Map(document.getElementById("map"),mapOptions);
-        var locations = {{ locations|safe}};
-        locations.forEach(function (data){
+        function initmap(coords, infoWindow) {
+            var mapOptions = {
+                zoom: 16,
+                center: coords,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            var locations = {{ locations| safe
+        }};
+        locations.forEach(function (data) {
             var marker = new google.maps.Marker({
-                position: {lat: data.lat, lng: data.lng},
+                position: { lat: data.lat, lng: data.lng },
                 map: map,
                 title: data.name
             });
@@ -56,70 +60,73 @@
             });
 
             infoWindow.push(infowindow)
-            marker.addListener('click', function(){
-                infoWindow.forEach(function(iw){
+            marker.addListener('click', function () {
+                infoWindow.forEach(function (iw) {
                     iw.close();
                 });
 
                 infowindow.open(map, marker)
-                });
+            });
         });
 
-        marker_current= new google.maps.Marker({
-            map:map,
-            position:coords,
+        marker_current = new google.maps.Marker({
+            map: map,
+            position: coords,
             icon: {
-      url: "http://maps.google.com/mapfiles/arrow.png"
-    }
+                url: "http://maps.google.com/mapfiles/arrow.png"
+            }
         });
     }
-    function success(position){
-        count++;
+        function success(position) {
+            count++;
 
-        var myLat=position.coords.latitude;
-        var myLong=position.coords.longitude;
-        var user_location = document.getElementById("user_location");
+            var myLat = position.coords.latitude;
+            var myLong = position.coords.longitude;
+            var user_location = document.getElementById("user_location");
 
-        user_location.innerHTML="current location longitude：" + myLong+"<br>";
-        user_location.innerHTML+="current location latitude：" + myLat+"<br>";
-        user_location.innerHTML+="count：" + count;
-        {#consulted chatGPT for using document in js to show information on page#}
+            user_location.innerHTML = "current location longitude：" + myLong + "<br>";
+            user_location.innerHTML += "current location latitude：" + myLat + "<br>";
+            user_location.innerHTML += "count：" + count;
+            { #consulted chatGPT for using document in js to show information on page# }
 
-        var infoWindow = [];
+            var infoWindow = [];
 
-        var coords=new google.maps.LatLng(myLat,myLong);
-        if(count==1){
-            initmap(coords,infoWindow)
-        }
-        if(marker_current.position.latitude!=coords.latitude||marker_current.position.longitude!=coords.longitude){
-            marker_current.setPosition(coords)
-        }
+            var coords = new google.maps.LatLng(myLat, myLong);
+            if (count == 1) {
+                initmap(coords, infoWindow)
+            }
+            if (marker_current.position.latitude != coords.latitude || marker_current.position.longitude != coords.longitude) {
+                marker_current.setPosition(coords)
+            }
 
 
-        var locations = {{ locations|safe}};
-        var flag=false
-        locations.forEach(function (data){
-            console.log(haversine_distance(data.lng, data.lat,myLong,myLat))
-            if(haversine_distance(data.lng, data.lat,myLong,myLat)<=1000){
-                flag=true;
+            var locations = {{ locations| safe
+        }};
+        var flag = false
+        locations.forEach(function (data) {
+            console.log(haversine_distance(data.lng, data.lat, myLong, myLat))
+            if (haversine_distance(data.lng, data.lat, myLong, myLat) <= 1000) {
+                flag = true;
             }
         });
 
-        if(flag){
+        if (flag) {
             infowindow_distance.close();
-            infowindow_distance.open(map,marker_current);}
+            infowindow_distance.open(map, marker_current);
+        }
     }
 
-    function failure(){}
-</script>
+        function failure() { }
+    </script>
     <style type="text/css">
-        #map{
-            width:80%;
-            height:60vh;
+        #map {
+            width: 80%;
+            height: 60vh;
             padding: 10px;
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd; margin-bottom: 50px;">
         <div class="container-fluid">
@@ -141,7 +148,7 @@
                             <a class="dropdown-item" href="{% url 'Home' %}">Home</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="{% url 'input_location' %}">Create Point</a>
+                            <a class="dropdown-item" href="{% url 'first_page_game' %}">Create Game</a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="{% url 'choose_game' %}">Choose Game</a>
@@ -175,73 +182,73 @@
             <div class="col-5">
                 <div class="linkholder">
                     {% if mydata.count == 0 %}
-                        <div> No data available </div>
+                    <div> No data available </div>
                     {% else %}
-                        <table id="ourtable3" class="myTable m-3">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Address</th>
-                                    <th>Zipcode</th>
-                                    <th>City</th>
-                                    <th>Country</th>
-                                    <th>longitude</th>
-                                    <th>latitude</th>
-                                    <th>place_id</th>
-            
-                                </tr>
-                            </thead>
-            
-                            <tbody>
-                                {% for a in mydata %}
-                                <tr>
-                                    <td> {{a.id}} </td>
-                                    <td> {{a.address}} </td>
-                                    <td> {{a.zipcode}} </td>
-                                    <td> {{a.city}} </td>
-                                    <td> {{a.country}} </td>
-                                    <td> {{a.longitude}} </td>
-                                    <td> {{a.latitude}} </td>
-                                    <td> {{a.place_id}} </td>
-                                </tr>
-            
-                                {% endfor%}
-                            </tbody>
-            
-            
-                        </table>
+                    <table id="ourtable3" class="myTable m-3">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Address</th>
+                                <th>Zipcode</th>
+                                <th>City</th>
+                                <th>Country</th>
+                                <th>longitude</th>
+                                <th>latitude</th>
+                                <th>place_id</th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for a in mydata %}
+                            <tr>
+                                <td> {{a.id}} </td>
+                                <td> {{a.address}} </td>
+                                <td> {{a.zipcode}} </td>
+                                <td> {{a.city}} </td>
+                                <td> {{a.country}} </td>
+                                <td> {{a.longitude}} </td>
+                                <td> {{a.latitude}} </td>
+                                <td> {{a.place_id}} </td>
+                            </tr>
+
+                            {% endfor%}
+                        </tbody>
+
+
+                    </table>
                     {% endif %}
-                 </div>
+                </div>
             </div>
         </div>
     </div>
 
 
-<style>
-.myTable{
-    font-size: 12px;
-    min-width: 400px;
-    overflow: hidden;
-    border-radius: 7px 7px 0 0;
-    box-shadow: 0 0 20px rgba(0, 0, 0, .15);
-    border:1px solid black;
-}
+    <style>
+        .myTable {
+            font-size: 12px;
+            min-width: 400px;
+            overflow: hidden;
+            border-radius: 7px 7px 0 0;
+            box-shadow: 0 0 20px rgba(0, 0, 0, .15);
+            border: 1px solid black;
+        }
 
-.myTable td, .myTable th {
-   border:1px solid black;
-  }
-
-
-
-
-
-</style>
+        .myTable td,
+        .myTable th {
+            border: 1px solid black;
+        }
+    </style>
 
 </body>
+
 </html>
 
 {#learned how to use html table from this URl: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_table6#}
 {#learned how to change icons from this URL:https://sites.google.com/site/gmapsdevelopment/#}
-{#learned how to do geo coding from this series of videos: https://www.youtube.com/watch?v=sasx2ppol5c&list=PLmEKHA8iFrmD6YEiuROna3JmNC7fjq6go&index=5#}
-{#learned how to calculate distance with longitude and latitude from this URl: https://cloud.google.com/blog/products/maps-platform/how-calculate-distances-map-maps-javascript-api#}
-{#learned how to open popup window in google map api from this URL:https://www.tutorialspoint.com/google_maps/google_maps_info_window.htm#}
+{#learned how to do geo coding from this series of videos:
+https://www.youtube.com/watch?v=sasx2ppol5c&list=PLmEKHA8iFrmD6YEiuROna3JmNC7fjq6go&index=5#}
+{#learned how to calculate distance with longitude and latitude from this URl:
+https://cloud.google.com/blog/products/maps-platform/how-calculate-distances-map-maps-javascript-api#}
+{#learned how to open popup window in google map api from this
+URL:https://www.tutorialspoint.com/google_maps/google_maps_info_window.htm#}

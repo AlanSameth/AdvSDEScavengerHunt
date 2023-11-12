@@ -1,0 +1,27 @@
+body{
+    font-family: Ubuntu;
+}
+.col-4{
+    border-radius: 2px;
+    border-color: gray;
+}
+.card{
+    border-radius: 2px;
+    border-color: gray;
+    background-color: white;
+}
+.placeholder{
+    height: 300px;
+}
+
+.table{
+    overflow-y:scroll;
+    height:200px;
+}
+
+.navbar{
+    margin-left: 10px; 
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+

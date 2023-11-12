@@ -24,8 +24,8 @@ class location_form(forms.Form):
     clue = forms.CharField(max_length=400, label="Clue", required=True)
 
 class game_form(forms.Form):
-    game_name = forms.CharField(max_length=400, label="game_name", required=True)
-    game_description = forms.CharField(max_length=400, label="game_description", required=True)
+    game_name = forms.CharField(max_length=400, label="Game Name", required=True)
+    game_description = forms.CharField(max_length=400, label="Game Description", required=True)
 
 class approvalForm(forms.ModelForm):
     is_approved=forms.BooleanField()
@@ -150,13 +150,18 @@ def input_game(request,game_id):
 def home_page(request):
     if request.user.is_authenticated:
         user_new = User.objects.filter(user_email=request.user.email).first()
+        Games = Game.objects.filter(is_approved=True, looked_by_admin=True)
         if user_new is not None:
             user_new.user_name = request.user.username
             user_new.save()
             if user_new.is_admin:
-                return render(request, "user/admin_home.html", {"admin": user_new})
+                context = {
+                    "admin": user_new,
+                    "games": Games,
+                }
+                return render(request, "user/admin_home.html", context)
             else:
-                return render(request, "user/home.html")
+                return render(request, "user/home.html", {"games": Games})
         else:
             user_tosave = User(user_name=request.user.username, user_email=request.user.email)
             user_tosave.save()

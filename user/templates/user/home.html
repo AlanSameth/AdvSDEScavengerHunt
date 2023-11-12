@@ -41,16 +41,13 @@
               <a class="dropdown-item" href="{% url 'Home' %}">Home</a>
             </li>
             <li>
-              <a class="dropdown-item" href="{% url 'input_location' %}">Create Point</a>
-            </li>
-            <li>
               <a class="dropdown-item" href="{% url 'first_page_game' %}">Create Game</a>
             </li>
             <li>
               <a class="dropdown-item" href="{% url 'your_game' %}">Your Games</a>
             </li>
             <li>
-                <a class="dropdown-item" href="{% url 'choose_game' %}">Choose Game</a>
+              <a class="dropdown-item" href="{% url 'choose_game' %}">Start A Game!</a>
             </li>
             <li>
               <a class="dropdown-item" href="logout">Logout</a>
@@ -60,7 +57,40 @@
       </div>
     </div>
   </nav>
+  <div class="container">
+    <div class="card" style="width: 60rem;">
+      <div class="card-header">
+        <h1>Welcome to the UVA Scavenger Hunt! </h1>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <p>This website allows you to create and play your own tailored scavenger hunts as well as other peoples
+            hunts!
+          </p>
+        </div>
+        <div class="row">
+          <a href="{% url 'first_page_game' %}"><button>Create Game</button></a>
+        </div>
+        <div class="row">
 
+          <a href="{% url 'your_game' %}"><button>View Your Game Submissions</button></a>
+        </div>
+        <div class="row">
+          <div class="btn-group">
+            <button type="button" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              Choose a Scavenger Hunt to Start Playing
+            </button>
+            <div class="dropdown-menu" id="#StartGame">
+              {% for game in games %}
+              <a class="dropdown-item" href="{% url 'Map' game.id %}"> {{ game.game_name }}</a><br>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   {% else %}
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd">
     <div class="container-fluid">
@@ -76,55 +106,21 @@
           Google</button></a><br>
     </div>
   </nav>
-  {# <div class="g-signin2" data-onsuccess="onSignIn"></div>#}
-  {% endif %}
-  <div class="container text-center">
-    <div class="row">
-      <div class="col-8">
-        <div class="row">
-          <h1>scavenger hunt game login </h1>
-        </div>
-        <div class="row">
-        </div>
+  <div class="container text-center" style="align-items: center;">
+    <div class="card" style="width: 40rem;">
+      <div class="card-header">
+        <h1>Welcome to the Scavenger Hunt!</h1>
       </div>
-      <div class="col-4">
-        <span class="border">
-          <h1 style="font-family: Ubuntu;">Leaderboard</h1>
-          <table class="table ">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </table>
-        </span>
+      <div class="card-body">
+        <h3>In order to access the website to create and play scavenger hunts, login with Google</h3>
+        <a href="{% provider_login_url 'google' %}?next=/"><button type="button" class="btn btn-outline-primary">Login
+            With
+            Google</button></a><br>
       </div>
     </div>
   </div>
-  </div>
-
+  {# <div class="g-signin2" data-onsuccess="onSignIn"></div>#}
+  {% endif %}
   <footer class="bg-dark bg-info text-center text-lg-start fixed-bottom">
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
       <a class="navbar-brand" href="https://github.com/orgs/uva-cs3240-f23/teams/b-27" style="font-family: Ubuntu;">
@@ -141,4 +137,5 @@
 {#learned how to use allauth and some of the html from those URLs: https://www.youtube.com/watch?v=Gk9tsLHMMsM#}
 {#https://www.youtube.com/watch?v=yO6PP0vEOMc#}
 {#https://www.youtube.com/watch?v=GQySb3W2feo#}
-{#Also looked at the google API documentation URL: https://developers.google.com/identity/gsi/web/guides/display-buttonhtml#}
+{#Also looked at the google API documentation URL:#}
+{#https://developers.google.com/identity/gsi/web/guides/display-buttonhtml#}

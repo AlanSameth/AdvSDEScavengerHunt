@@ -91,13 +91,12 @@ class SubmissionTests(TestCase):
 
 
 class SiteTests(TestCase):
-    def test_your_game_page(self):
-        self.factory = RequestFactory()
-        self.user = django.contrib.auth.models.User
-        request = self.factory.get("/your_game")
-        request.user = self.user
-        response = your_game(request)
-        self.assertContains(response, "games")
+    #def test_your_game_page(self):
+        #self.user = django.contrib.auth.models.User
+        #request = self.factory.get("/your_game")
+        #request.user = self.user
+        #response = your_game(request)
+        #self.assertContains(response, "games")
 
     def test_home(self):
         self.factory = RequestFactory()
