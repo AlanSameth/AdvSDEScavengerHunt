@@ -8,6 +8,8 @@ urlpatterns = [
     path("inputlocation/logout/", views.logout_user),
     path("first_page_game/logout/", views.logout_user),
     path("<int:game_id>/map/logout/", views.logout_user),
+    path("win/logout/", views.logout_user),
+    path("choose_game/logout/", views.logout_user),
     path("approval/logout/", views.logout_user),
     path("your_game/logout/", views.logout_user, name='your_game'),
     path("<int:game_id>/map/", views.Map,name="Map"),

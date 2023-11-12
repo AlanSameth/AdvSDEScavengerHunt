@@ -57,8 +57,10 @@
                 <h1> Congratulations you have finished the journey!!</h1>
             </div>
             <div class="card-body">
-                <button href="{% url 'Home' %}"> Return to Home</button>
-                <button href="{% url 'choose_game' %}"> Start Another Scavenger Hunt</button>
+{#                <button href="{% url 'Home' %}"> Return to Home</button>#}
+{#                <button href="{% url 'choose_game' %}"> Start Another Scavenger Hunt</button>#}
+                <a href="{% url 'Home' %}" class="btn btn-primary">Return to Home</a>
+                <a href="{% url 'choose_game' %}" class="btn btn-primary">Start Another Scavenger Hunt</a>
             </div>
         </div>
     </div>
