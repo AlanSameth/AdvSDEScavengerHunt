@@ -19,12 +19,14 @@
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap"></script>
     <script>
+        var location_all={{ locations| safe}};
+        var guesses = 0;
+        var loca_now=location_all[guesses]
+
         x = navigator.geolocation;
         //{ #x.getCurrentPosition(success, failure);# }
         options = { enableHighAccuracy: false, maximumAge: 0, distanceFilter: 1, timeout: 100 }
-        x.watchPosition(success, failure, options);
-        var location_counter = 0;
-        var guesses = 0;
+        watchID=x.watchPosition(success, failure, options);
         var count = 0;
         var map;
         var marker_current;
@@ -65,7 +67,7 @@
 
             user_location.innerHTML = "current location longitude：" + myLong + "<br>";
             user_location.innerHTML += "current location latitude：" + myLat + "<br>";
-            user_location.innerHTML += "count：" + count;
+            user_location.innerHTML += "count：" + count + "<br>";
             user_location.innerHTML += " Guesses：" + guesses;
 
             var infoWindow = [];
@@ -82,7 +84,6 @@
             var locations = {{ locations| safe}};
             var flag = false
             locations.forEach(function (data) {
-                console.log(haversine_distance(data.lng, data.lat, myLong, myLat))
                 if (haversine_distance(data.lng, data.lat, myLong, myLat) <= 10000) {
                     flag = true;
                 }
@@ -95,6 +96,8 @@
         }
 
         function submit_location(){
+            var para1 = document.getElementById("hint");
+            para1.innerHTML="";
             x.clearWatch(watchID);
             x.getCurrentPosition(position => {
                 check_location(position);
@@ -102,25 +105,32 @@
         }
 
         function check_location(position) {
-            guesses++;
             var para1 = document.getElementById("At");
             var myLat = position.coords.latitude;
             var myLong = position.coords.longitude;
 
-            var locations = {{ locations| safe}};
+            loca_now=location_all[guesses]
+            console.log("location:",loca_now)
             var flag = false
-            locations.forEach(function (data) {
-                console.log(haversine_distance(data.lng, data.lat, myLong, myLat))
-                if (haversine_distance(data.lng, data.lat, myLong, myLat) <= 100) {
+            if (haversine_distance(loca_now.lng, loca_now.lat, myLong, myLat) <= 10000) {
                     flag = true;
+                    guesses++;
+
                 }
-            });
+
+            console.log("flag:",flag)
             if (flag) {
-                para1.innerText("You are at the hidden location!");
+                para1.innerHTML ="You are at the hidden location_"+ guesses+"!"
+                if(guesses>=3){
+                    window.location.href = "{% url 'win' %}"
+                }
+                var clue = document.getElementById("clue");
+                clue.innerHTML = "Clue: "+ location_all[guesses].clue
             }
             else{
-                para1.innerText("You are not quite there yet to the location");
+                para1.innerHTML ="You are not quite there yet to the location"
             }
+            watchID=x.watchPosition(success, failure, options);
         }
         function failure() { }
     </script>
@@ -186,7 +196,11 @@
             </div>
             <div class="col-4">
                 <div class="row">
-                    <p>Clue : Some thing from location model here</p>
+                    <p id="clue">Clue : Some thing from location model here</p>
+                    <script>
+                          var clue = document.getElementById("clue");
+                          clue.innerHTML = "Clue: " + loca_now.clue;
+                    </script>
                 </div>
                 <div class="row">
                     <div class="card">
@@ -200,7 +214,7 @@
                             <script>
                                 var para1 = document.getElementById("hint");
                                 function changeImage() {
-                                    para1.innerText = "This is a Really Bad Hint ";
+                                    para1.innerText = location_all[guesses].hint;
                                 }
                             </script>
                             <div class="row"> 
@@ -209,13 +223,13 @@
                                 {% endfor %}
                                 <button id="btn" onclick="submit_location()" type="button" class="btn btn-success">Submit</button>
                                 <p id="At">Waiting On Submission</p>
-                                <script>
-                                    function submit_location(){
-                                        navigator.geolocation.getCurrentPosition(position => {
-                                        input_location(position);
-                                        });
-                                    }
-                                </script>
+{#                                <script>#}
+{#                                    function submit_location(){#}
+{#                                        navigator.geolocation.getCurrentPosition(position => {#}
+{#                                        input_location(position);#}
+{#                                        });#}
+{#                                    }#}
+{#                                </script>#}
                             </div>
                         </div>
                     </div>

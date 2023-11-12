@@ -168,29 +168,29 @@ def logout_user(request,game_id=None):
     return redirect('/')
 
 
-class SubmissionView(CreateView):
-    model = Game
-    fields = ['game_name']
-    #figure out template
-    #figure out success url
-    def get_context_data(self, **kwargs):
-        data = super(SubmissionView, self).get_context_data(**kwargs)
-        if self.request.POST:
-            data['game'] = LocationFormSet(self.request.POST)
-        else:
-            data['game'] = LocationFormSet()
-        return data
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        game = context['game']
-        with transaction.atomic():
-            self.object = form.save()
-
-            if game.is_valid():
-                game.instance = self.object
-                game.save()
-        return super(SubmissionView, self).form_valid(form)
+# class SubmissionView(CreateView):
+#     model = Game
+#     fields = ['game_name']
+#     #figure out template
+#     #figure out success url
+#     def get_context_data(self, **kwargs):
+#         data = super(SubmissionView, self).get_context_data(**kwargs)
+#         if self.request.POST:
+#             data['game'] = LocationFormSet(self.request.POST)
+#         else:
+#             data['game'] = LocationFormSet()
+#         return data
+#
+#     def form_valid(self, form):
+#         context = self.get_context_data()
+#         game = context['game']
+#         with transaction.atomic():
+#             self.object = form.save()
+#
+#             if game.is_valid():
+#                 game.instance = self.object
+#                 game.save()
+#         return super(SubmissionView, self).form_valid(form)
 
 
 def Map(request,game_id):
@@ -205,7 +205,9 @@ def Map(request,game_id):
                 data = {
                     'lat': float(a.latitude),
                     'lng': float(a.longitude),
-                    'name': a.address
+                    'name': a.address,
+                    'hint': a.hint,
+                    'clue': a.clue
                 }
                 locations.append(data)
             print(locations)
@@ -219,7 +221,9 @@ def Map(request,game_id):
                 data = {
                     'lat': float(a.latitude),
                     'lng': float(a.longitude),
-                    'name': a.address
+                    'name': a.address,
+                    'hint': a.hint,
+                    'clue': a.clue
                 }
                 locations.append(data)
             print(locations)
@@ -291,6 +295,10 @@ def choose_game(request):
         return render(request, "user/choose_game.html", {"games": Games})
     else:
         return HttpResponseRedirect(reverse("Home"))
+
+def win(request):
+    return render(request, "user/win.html")
+
 
 #learned how to use logout from this URL: https://www.youtube.com/watch?v=yO6PP0vEOMc
 # learned more about forms from this URL: https://docs.djangoproject.com/en/4.2/topics/forms/
