@@ -67,8 +67,9 @@
 
             user_location.innerHTML = "current location longitude：" + myLong + "<br>";
             user_location.innerHTML += "current location latitude：" + myLat + "<br>";
-            user_location.innerHTML += "count：" + count + "<br>";
-            user_location.innerHTML += " Guesses：" + guesses;
+
+            {#user_location.innerHTML += "count：" + count + "<br>";#}
+            {#user_location.innerHTML += " Guesses：" + guesses;#}
 
             var infoWindow = [];
 
@@ -218,9 +219,9 @@
                                 }
                             </script>
                             <div class="row"> 
-                                {% for location in mydata %}
-                                    <p>Address : {{ location.address }} Lat : {{location.latitude}} Long : {{location.longitude}}</p>
-                                {% endfor %}
+{#                                {% for location in mydata %}#}
+{#                                    <p>Address : {{ location.address }} Lat : {{location.latitude}} Long : {{location.longitude}}</p>#}
+{#                                {% endfor %}#}
                                 <button id="btn" onclick="submit_location()" type="button" class="btn btn-success">Submit</button>
                                 <p id="At">Waiting On Submission</p>
 {#                                <script>#}
