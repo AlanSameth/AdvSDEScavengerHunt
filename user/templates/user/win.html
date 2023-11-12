@@ -52,15 +52,22 @@
         </div>
     </nav>
     <div class="container-fluid">
-        <div class="card" style="width: 40rem;">
+        <div class="card mx-auto" style="width: 40rem;">
             <div class="card-header">
                 <h1> Congratulations you have finished the journey!!</h1>
             </div>
             <div class="card-body">
-{#                <button href="{% url 'Home' %}"> Return to Home</button>#}
-{#                <button href="{% url 'choose_game' %}"> Start Another Scavenger Hunt</button>#}
-                <a href="{% url 'Home' %}" class="btn btn-primary">Return to Home</a>
-                <a href="{% url 'choose_game' %}" class="btn btn-primary">Start Another Scavenger Hunt</a>
+                <div class="col d-flex justify-content-center">
+                    <u1 class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <a href="{% url 'Home' %}"><button href="{% url 'Home' %}" class="btn-primary btn-lg" style="margin-top: 5px; margin-bottom: 5px;"> Return to Home</button></a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="{% url 'choose_game' %}"><button href="{% url 'choose_game' %}" class="btn-primary btn-lg" style="margin-top: 5px; margin-bottom: 5px;"> Start Another Scavenger Hunt</button></a>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </div>
