@@ -20,7 +20,7 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZuOZgsa4NguR95jd7NL1C4Ov01ozSbbc&callback=initMap"></script>
     <script>
         x = navigator.geolocation;
-        { #x.getCurrentPosition(success, failure);# }
+        {#x.getCurrentPosition(success, failure);#}
         options = { enableHighAccuracy: false, maximumAge: 0, distanceFilter: 1, timeout: 100 }
         x.watchPosition(success, failure, options);
         var count = 0;
@@ -46,8 +46,7 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             }
             map = new google.maps.Map(document.getElementById("map"), mapOptions);
-            var locations = {{ locations| safe
-        }};
+            var locations = {{ locations| safe}};
         locations.forEach(function (data) {
             var marker = new google.maps.Marker({
                 position: { lat: data.lat, lng: data.lng },
@@ -87,7 +86,7 @@
             user_location.innerHTML = "current location longitude：" + myLong + "<br>";
             user_location.innerHTML += "current location latitude：" + myLat + "<br>";
             user_location.innerHTML += "count：" + count;
-            { #consulted chatGPT for using document in js to show information on page# }
+            {#consulted chatGPT for using document in js to show information on page#}
 
             var infoWindow = [];
 
@@ -100,8 +99,7 @@
             }
 
 
-            var locations = {{ locations| safe
-        }};
+            var locations = {{ locations| safe}};
         var flag = false
         locations.forEach(function (data) {
             console.log(haversine_distance(data.lng, data.lat, myLong, myLat))
@@ -244,9 +242,9 @@
 
 {#learned how to use html table from this URl: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_table6#}
 {#learned how to change icons from this URL:https://sites.google.com/site/gmapsdevelopment/#}
-{#learned how to do geo coding from this series of videos:
-https://www.youtube.com/watch?v=sasx2ppol5c&list=PLmEKHA8iFrmD6YEiuROna3JmNC7fjq6go&index=5#}
-{#learned how to calculate distance with longitude and latitude from this URl:
-https://cloud.google.com/blog/products/maps-platform/how-calculate-distances-map-maps-javascript-api#}
-{#learned how to open popup window in google map api from this
-URL:https://www.tutorialspoint.com/google_maps/google_maps_info_window.htm#}
+{#learned how to do geo coding from this series of videos:#}
+{#https://www.youtube.com/watch?v=sasx2ppol5c&list=PLmEKHA8iFrmD6YEiuROna3JmNC7fjq6go&index=5#}
+{#learned how to calculate distance with longitude and latitude from this URl:#}
+{#https://cloud.google.com/blog/products/maps-platform/how-calculate-distances-map-maps-javascript-api#}
+{#learned how to open popup window in google map api from this#}
+{#URL:https://www.tutorialspoint.com/google_maps/google_maps_info_window.htm#}
