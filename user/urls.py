@@ -9,7 +9,7 @@ urlpatterns = [
     path("first_page_game/logout/", views.logout_user),
     path("<int:game_id>/map/logout/", views.logout_user),
     path("approval/logout/", views.logout_user),
-    path("your_game/logout/", views.your_game, name='your_game'),
+    path("your_game/logout/", views.logout_user, name='your_game'),
     path("<int:game_id>/map/", views.Map,name="Map"),
     path("inputlocation/", views.input_location, name='input_location'),
     path("approval/", views.approval, name='approval'),
