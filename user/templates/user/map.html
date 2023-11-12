@@ -194,25 +194,24 @@
             </div>
             <div class="col-4">
                 <div class="row">
-                    <p id="clue">Clue : Some thing from location model here</p>
-                    <script>
-                          var clue = document.getElementById("clue");
-                          clue.innerHTML = "Clue: " + loca_now.clue;
-                    </script>
-                </div>
-                <div class="row">
                     <div class="card">
                         <div class="card-header">
                             <h1>Clues and Hints</h1>
                         </div>
                         <div class="card-body">
+                            <div class="row">
+                                <h3 id="clue">Clue : Some thing from location model here</h3>
+                                <script>
+                                      var clue = document.getElementById("clue");
+                                      clue.innerHTML = "Clue: " + loca_now.clue;
+                                </script>
                             <button id="btn" onclick="changeImage()" type="button" class="btn btn-primary"> Get A Hint
                             </button>
-                            <p id="hint"></p>
+                            <h4 id="hint"></h4>
                             <script>
                                 var para1 = document.getElementById("hint");
                                 function changeImage() {
-                                    para1.innerText = location_all[guesses].hint;
+                                    para1.innerText = "Hint:" + location_all[guesses].hint;
                                 }
                             </script>
                             <div class="row"> 
@@ -220,7 +219,7 @@
 {#                                    <p>Address : {{ location.address }} Lat : {{location.latitude}} Long : {{location.longitude}}</p>#}
 {#                                {% endfor %}#}
                                 <button id="btn" onclick="submit_location()" type="button" class="btn btn-success">Submit</button>
-                                <p id="At">Waiting On Submission</p>
+                                <p id="At"></p>
 {#                                <script>#}
 {#                                    function submit_location(){#}
 {#                                        navigator.geolocation.getCurrentPosition(position => {#}

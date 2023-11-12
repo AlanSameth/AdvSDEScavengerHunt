@@ -58,27 +58,27 @@
     </div>
   </nav>
   <div class="container">
-    <div class="card" style="width: 60rem;">
+    <div class="card mx-auto" style="width: 50rem;">
       <div class="card-header">
         <h1>Welcome to the UVA Scavenger Hunt! </h1>
       </div>
       <div class="card-body">
         <div class="row">
-          <p>This website allows you to create and play your own tailored scavenger hunts as well as other peoples
+          <h4>This website allows you to create and play your own tailored scavenger hunts as well as other peoples
             hunts!
-          </p>
+          </h4>
         </div>
         <div class="row">
-          <a href="{% url 'first_page_game' %}"><button>Create Game</button></a>
+          <a href="{% url 'first_page_game' %}"><button class="btn-lg btn-outline-primary">Create Game</button></a>
         </div>
         <div class="row">
-
-          <a href="{% url 'your_game' %}"><button>View Your Game Submissions</button></a>
+          <a href="{% url 'your_game' %}"><button class="btn-lg btn-outline-primary">View Your Game
+              Submissions</button></a>
         </div>
         <div class="row">
           <div class="btn-group">
-            <button type="button" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false">
+            <button type="button" class="dropdown-toggle btn-lg btn-outline-primary" data-bs-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
               Choose a Scavenger Hunt to Start Playing
             </button>
             <div class="dropdown-menu" id="#StartGame">
@@ -107,15 +107,14 @@
     </div>
   </nav>
   <div class="container text-center" style="align-items: center;">
-    <div class="card" style="width: 40rem;">
+    <div class="card mx-auto" style="width: 40rem;">
       <div class="card-header">
         <h1>Welcome to the Scavenger Hunt!</h1>
       </div>
       <div class="card-body">
         <h3>In order to access the website to create and play scavenger hunts, login with Google</h3>
-        <a href="{% provider_login_url 'google' %}?next=/"><button type="button" class="btn btn-outline-primary">Login
-            With
-            Google</button></a><br>
+        <a href="{% provider_login_url 'google' %}?next=/"><button type="button" class="btn btn-outline-primary"> <img
+              src="{% static 'user/images/Google Logo.png'%}" alt="Image of Google Logo" style="height: 200px; width: 100%;"></button></a><br>
       </div>
     </div>
   </div>
