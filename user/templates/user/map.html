@@ -85,7 +85,7 @@
             var locations = {{ locations| safe}};
             var flag = false
             locations.forEach(function (data) {
-                if (haversine_distance(data.lng, data.lat, myLong, myLat) <= 10000) {
+                if (haversine_distance(data.lng, data.lat, myLong, myLat) <= 500) {
                     flag = true;
                 }
             });
@@ -113,7 +113,7 @@
             loca_now=location_all[guesses]
             console.log("location:",loca_now)
             var flag = false
-            if (haversine_distance(loca_now.lng, loca_now.lat, myLong, myLat) <= 10000) {
+            if (haversine_distance(loca_now.lng, loca_now.lat, myLong, myLat) <= 100) {
                     flag = true;
                     guesses++;
 
