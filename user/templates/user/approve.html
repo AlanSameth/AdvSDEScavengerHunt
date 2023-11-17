@@ -67,14 +67,24 @@
             {{ game.dis }}
         </td>
         <td>
+{#            <div class="form-check">#}
+{#                <label for="box" > approve </label>#}
+{#                <input class="form-check-input" type="checkbox"  name="box" value={{ game.id }}>#}
+{##}
+{#            </div>#}
+{#            <div class="form-check">#}
+{#                <label for="box_not" > disapprove </label>#}
+{#                <input class="form-check-input" type="checkbox"  name="box_not" value={{ game.id }}>#}
+{#            </div>#}
+
             <div class="form-check">
-                <label for="box" > approve </label>
-                <input class="form-check-input" type="checkbox"  name="box" value={{ game.id }}>
+                <label for={{ game.id }} > approve </label>
+                <input class="form-check-input" type="radio"  name={{ game.id }} value=1>
 
             </div>
             <div class="form-check">
-                <label for="box_not" > disapprove </label>
-                <input class="form-check-input" type="checkbox"  name="box_not" value={{ game.id }}>
+                <label for={{ game.id }} > disapprove </label>
+                <input class="form-check-input" type="radio"  name={{ game.id }} value=0>
             </div>
         </td>
         </tr>

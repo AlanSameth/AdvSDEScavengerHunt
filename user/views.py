@@ -239,16 +239,45 @@ def Map(request,game_id):
 
 
 def approval(request):
+    # if request.user.is_authenticated:
+    #     user_new = User.objects.filter(user_email=request.user.email).first()
+    #     if user_new.is_admin:
+    #         if request.method == "POST":
+    #             game_list_approved=request.POST.getlist('box')
+    #             game_list_disapproved=request.POST.getlist('box_not')
+    #             for i in game_list_approved:
+    #                 Game.objects.filter(id=int(i)).update(is_approved=True,looked_by_admin=True)
+    #             for j in game_list_disapproved:
+    #                 Game.objects.filter(id=int(j)).update(is_approved=False,looked_by_admin=True)
+    #             return HttpResponseRedirect(reverse("Home"))
+    #         else:
+    #             game_need_approval = Game.objects.filter(is_approved=False,looked_by_admin=False)
+    #             games = []
+    #             for a in game_need_approval:
+    #                 data = {
+    #                     'name': a.game_name,
+    #                     'id': a.id,
+    #                     'dis': a.game_description
+    #                 }
+    #                 games.append(data)
+    #             return render(request, "user/approve.html", { "games": games})
+    #     else:
+    #         return HttpResponseRedirect(reverse("Home"))
+    # else:
+    #     return HttpResponseRedirect(reverse("Home"))
+
     if request.user.is_authenticated:
         user_new = User.objects.filter(user_email=request.user.email).first()
         if user_new.is_admin:
             if request.method == "POST":
-                game_list_approved=request.POST.getlist('box')
-                game_list_disapproved=request.POST.getlist('box_not')
-                for i in game_list_approved:
-                    Game.objects.filter(id=int(i)).update(is_approved=True,looked_by_admin=True)
-                for j in game_list_disapproved:
-                    Game.objects.filter(id=int(j)).update(is_approved=False,looked_by_admin=True)
+                game_dict=request.POST
+                for key, value in game_dict.items():
+                    if value == "1":
+                        print(key,value)
+                        Game.objects.filter(id=int(key)).update(is_approved=True, looked_by_admin=True)
+                    elif value == "0":
+                        print(key, value)
+                        Game.objects.filter(id=int(key)).update(is_approved=False, looked_by_admin=True)
                 return HttpResponseRedirect(reverse("Home"))
             else:
                 game_need_approval = Game.objects.filter(is_approved=False,looked_by_admin=False)
