@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY",
     default=secrets.token_urlsafe(nbytes=64),)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1', 'projectb-27-4101244887a2.herokuapp.com','localhost']
 SITE_ID = 1
 SOCIALACCOUNT_LOGIN_ON_GET = True
