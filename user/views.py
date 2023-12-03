@@ -165,6 +165,7 @@ def home_page(request):
         else:
             user_tosave = User(user_name=request.user.username, user_email=request.user.email)
             user_tosave.save()
+            return render(request, "user/home.html", {"games": Games})
     return render(request, "user/home.html")
 
 
